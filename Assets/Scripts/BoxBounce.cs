@@ -19,7 +19,7 @@ public class BoxBounce : MonoBehaviour
 	void Start()
 	{
 		aAudioSource	=	GetComponent<AudioSource>();
-		aMeshRenderer	=	transform.root.FindChild("BoxMesh").GetComponent<MeshRenderer>();
+		aMeshRenderer	=	transform.parent.FindChild("BoxMesh").GetComponent<MeshRenderer>();
 		aCurrentHits 	=	0;
 	}
 
@@ -38,7 +38,7 @@ public class BoxBounce : MonoBehaviour
 				if (++aCurrentHits >= aMaxHits)
 				{
 					//smash this box by hiding it first
-					aColliders	=	transform.root.GetComponentsInChildren<BoxCollider>();
+					aColliders	=	transform.parent.GetComponentsInChildren<BoxCollider>();
 					foreach (BoxCollider lBox in aColliders)
 					{
 						lBox.enabled	=	false;
@@ -50,7 +50,7 @@ public class BoxBounce : MonoBehaviour
 					aAudioSource.PlayOneShot(aSmash);
 
 					//destroy after sfx is finished
-					Destroy(transform.root.gameObject, aSmash.length);
+					Destroy(transform.parent.gameObject, aSmash.length);
 
 					//execute rng to determine if this box should pop a pickup
 					if (Utilities.mfExecuteRNG(50))

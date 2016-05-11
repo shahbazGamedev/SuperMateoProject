@@ -10,10 +10,18 @@ public class EnemyVision : MonoBehaviour
 		aEnemyManager	=	transform.parent.GetComponent<EnemyManager>();
 	}
 
-	void OnTriggerEnter(Collider pCollider)
+	void OnTriggerEnter(Collider pOther)
 	{
-		if (pCollider.tag == "Matt")
+		if (pOther.tag == "Matt")
 		{
+			Miedo	lMiedoRef	=	pOther.GetComponent<Miedo>();
+
+			if (lMiedoRef.enabled)
+			{
+				if (lMiedoRef.aMiedoState == eMiedoPhase.STEALTH)
+					return;
+			}
+
 			// Go and chase Matt!
 			if (aEnemyManager.aCurrentAIState == eEnemyAIState.WANDER)
 			{

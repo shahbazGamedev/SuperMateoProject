@@ -46,4 +46,12 @@ public class Utilities : MonoBehaviour
 	{
 		return (Random.Range(1, 100) <= pMaxValidValue);
 	}
+
+	public static GameObject mfCreateEmotionObject(eMatea pBiorhythm, GameObject pEmotionObject, Transform pCameraObject)
+	{
+		GameObject	lResult	=	(GameObject)Instantiate(pEmotionObject, pCameraObject.position, pCameraObject.rotation);
+		lResult.transform.SetParent(pCameraObject);
+
+		return lResult;
+	}
 }

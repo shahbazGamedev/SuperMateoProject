@@ -14,7 +14,7 @@ public class DeadVolume : MonoBehaviour
 	IEnumerator	mcWaitBeforeSending()
 	{
 		CheckpointManager.mpLerpCameraOverlay();
-		yield return new WaitForSeconds(0.4f);
+		yield return new WaitForSeconds(0.2f);
 		CheckpointManager.mpSendMattToCheckpoint();
 	}
 

@@ -60,7 +60,7 @@ public class TextBoxManager : MonoBehaviour
 		if (!aIsActive)
 			return;
 
-		if (Input.GetKeyDown(KeyCode.Return))
+		if (Input.GetKeyDown(KeyCode.Return) || Input.GetButtonDown("A"))
 		{
 			if (!aIsTyping)
 			{

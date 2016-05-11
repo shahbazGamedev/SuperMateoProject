@@ -47,7 +47,7 @@ public class MattCamera : MonoBehaviour
 	{
 		while (aScreenOverlay.intensity < 1.0f)
 		{
-			aScreenOverlay.intensity	=	Utilities.mfApproach(1.0f, aScreenOverlay.intensity, Time.deltaTime * 2.5f);
+			aScreenOverlay.intensity	=	Utilities.mfApproach(1.0f, aScreenOverlay.intensity, Time.deltaTime * 4.5f);
 			yield return null;
 		}
 
@@ -65,6 +65,11 @@ public class MattCamera : MonoBehaviour
 
 	void Update() 
 	{	
+		if (Input.GetButtonDown("home"))
+		{
+			UnityEngine.SceneManagement.SceneManager.LoadScene(UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
+		}
+
 		//get current facing direction
 		aFacingDirection = Vector3.Dot(transform.forward, aMattTransform.forward);
 

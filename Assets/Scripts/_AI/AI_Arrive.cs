@@ -17,17 +17,33 @@ public class AI_Arrive : MonoBehaviour
 	private	Vector3	aSteeringVector;
 
 	private	EnemyManager	aEnemyManager;
+	private	Miedo			aMiedoRef;
 
 	void Start()
 	{
 		aEnemyManager	=	GetComponent<EnemyManager>();
+		aMiedoRef		=	aEnemyManager.aTarget.GetComponent<Miedo>();
 	}
 
 	public void mpExecute()
 	{
+		//if mateo goes STEALTH when chasing, then let him go return to WANDER.
+		if (aMiedoRef)
+		{
+			if (aMiedoRef.enabled)
+			{
+				if (aMiedoRef.aMiedoState == eMiedoPhase.STEALTH)
+				{
+					aEnemyManager.aCurrentAIState	=	eEnemyAIState.WANDER;
+					return;
+				}
+			}
+		}
+
 		if (!aEnemyManager.animator.GetCurrentAnimatorStateInfo(0).IsName("Attack(3)"))
 		{
 			aEnemyManager.rotationHelper.mpRotateViewVector((aEnemyManager.aTarget.transform.position - transform.position).normalized);
+
 			aEnemyManager.rgbody.velocity	+=	mfGetArriveSteering(aEnemyManager.aTarget.transform.position);
 		}
 	}

@@ -30,6 +30,9 @@ public class AI_Creeper : MonoBehaviour
 	{
 		switch (aEnemyManager.aCurrentAIState)
 		{
+		case eEnemyAIState.HIT:
+			aEnemyManager.aCurrentAnimState	=	eEnemyAnimState.HIT;
+			break;
 		case eEnemyAIState.WANDER:
 			//walk around circle
 			aWanderAI.mpExecute();
@@ -143,7 +146,8 @@ public class AI_Creeper : MonoBehaviour
 			break;
 		case eEnemyAnimState.HIT: 			
 			aEnemyManager.animator.SetInteger("State", 4); 
-			break;
+			aEnemyManager.mpStunEnemy(eEnemyAIState.APPROACHING);
+			return;
 		case eEnemyAnimState.DIE:			
 			aEnemyManager.animator.SetInteger("State", 5); 
 			break;
@@ -155,4 +159,5 @@ public class AI_Creeper : MonoBehaviour
 			break;
 		}
 	}
+
 }

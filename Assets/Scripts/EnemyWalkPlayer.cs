@@ -22,6 +22,9 @@ public class EnemyWalkPlayer : MonoBehaviour
 
 	void Update ()
     {
+    	if (aEnemyManager.aCurrentAIState == eEnemyAIState.DIE)
+    		return;
+
         if (Time.time > aNextStep)
         {
 			switch (aEnemyManager.aCurrentAnimState)

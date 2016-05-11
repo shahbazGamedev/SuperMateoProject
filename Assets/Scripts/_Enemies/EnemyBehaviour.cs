@@ -21,10 +21,11 @@ public class EnemyBehaviour : MonoBehaviour
 
 	public		AudioClip		aSpotLaughSFX;
 	public		AudioClip		aAttackSFX;
+	public		AudioClip		aHitSFX;
+	public		AudioClip		aDieSFX;
 
 	//Combat variables
 	public	GameObject	aDefeatPuff;
-	public	int			aStunTime;
 
 	public void mpInitBehaviour()
 	{

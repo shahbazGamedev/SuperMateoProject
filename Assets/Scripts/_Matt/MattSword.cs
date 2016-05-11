@@ -42,7 +42,7 @@ public class MattSword : MonoBehaviour
 				//let go button
 				aAttackButtonIsDown	=	false;
 
-				aAudioSource.PlayOneShot(aClips[Random.Range(0, 2)]);
+//				aAudioSource.PlayOneShot(aClips[Random.Range(0, 2)]);
 			}
 		}
 	}
@@ -63,13 +63,21 @@ public class MattSword : MonoBehaviour
 
 	void Update()
 	{
-		if (Input.GetKeyDown(KeyCode.J))
+		if (Input.GetButtonDown("X"))
 		{
-			if (!aAttackButtonIsDown)
-			{	
-				aStateBeforeAttacking		=	aMattManager.aCurrentState;
-				aMattManager.aCurrentState	=	eMattState.ATTACKING;
-				StartCoroutine(mcAttack());
+			if (aMattManager.aBiorhythm == eMatea.TRISTEZA)
+			{
+				aMattManager.mpInflictDamageToMatt(10.0f, Vector3.zero, 0);
+				transform.root.FindChild("Camera").GetComponent<PerlinShake>().mpInitShake(0.5f, 600.0f, 3.0f);
+			}
+			else
+			{
+				if (!aAttackButtonIsDown)
+				{	
+					aStateBeforeAttacking		=	aMattManager.aCurrentState;
+					aMattManager.aCurrentState	=	eMattState.ATTACKING;
+					StartCoroutine(mcAttack());
+				}
 			}
 		}
 	}

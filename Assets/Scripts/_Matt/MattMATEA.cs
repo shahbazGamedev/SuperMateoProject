@@ -12,8 +12,13 @@ public class MattMATEA : MattPhysics
 	private int[] 	aCurrentMATEA;
 	private	eMatea	aDominantEmotion;
 
-	//target filter camera
-	private	Transform	aMattCamera;
+	private	float	aTristezaIncreaseRate;
+	private	float	aNextTristezaIncrease;
+
+	private	Miedo		aMiedoRef;
+	private	Alegria		aAlegriaRef;
+	private	Tristeza	aTristezaRef;
+	private	Enojo		aEnojoRef;
 
 	public void mpInitMatea()
 	{
@@ -27,8 +32,15 @@ public class MattMATEA : MattPhysics
 			aCurrentMATEA[4] 	=	0;
 
 			aDominantEmotion	=	eMatea.NORMAL;
-			aMattCamera			=	transform.parent.FindChild("Camera");
 		}
+
+		aMiedoRef		=	GetComponent<Miedo>();
+		aAlegriaRef		=	GetComponent<Alegria>();
+		aTristezaRef	=	GetComponent<Tristeza>();
+		aEnojoRef		=	GetComponent<Enojo>();
+
+		aTristezaIncreaseRate	=	3.5f;
+		aNextTristezaIncrease	=	aTristezaIncreaseRate;
 	}
 
 	private void mpCalculateDominantEmotion()
@@ -40,17 +52,41 @@ public class MattMATEA : MattPhysics
 				if (aCurrentMATEA[i] >= aMaximumValue)
 				{
 					aDominantEmotion	=	(eMatea)i;
-					((GameObject)Instantiate(aEmotionObjects[(int)aDominantEmotion], aMattCamera.position, aMattCamera.rotation)).transform.SetParent(aMattCamera);
+					mpToggleEmotion(true);
 					break;
 				}
 			}
 		}
 	}
 
+	private void mpToggleEmotion(bool pValue)
+	{
+		switch (aDominantEmotion)
+		{
+		case eMatea.MIEDO: 
+			aMiedoRef.enabled		=	pValue;
+			break;
+		case eMatea.ALEGRIA: 
+			aAlegriaRef.enabled		=	pValue;
+			break;
+		case eMatea.TRISTEZA: 
+			aTristezaRef.enabled	=	pValue;
+			break;
+		case eMatea.ENOJO:
+			aEnojoRef.enabled		=	pValue;
+			break;
+		}
+	}
+
 	public void mpResetMatea()
 	{
-		aCurrentMATEA[(int)aDominantEmotion]	=	0;
-		aDominantEmotion	=	eMatea.NORMAL;
+		mpToggleEmotion(false);
+
+		if (aDominantEmotion != eMatea.NORMAL)
+		{
+			aCurrentMATEA[(int)aDominantEmotion]	=	0;
+			aDominantEmotion						=	eMatea.NORMAL;
+		}
 	}
 
 	public bool mfMattIsNormal()
@@ -86,20 +122,45 @@ public class MattMATEA : MattPhysics
 
 	protected void mpUpdateMatea()
 	{
-		if (Input.GetKeyDown(KeyCode.Alpha1))
+		if (aCurrentState == eMattState.IDLE && aDominantEmotion != eMatea.TRISTEZA)
 		{
-			aCurrentMATEA[0] = Mathf.Clamp(aCurrentMATEA[0] + 100, 0, aMaximumValue);
-			mpCalculateDominantEmotion();
+			if (Time.time > aNextTristezaIncrease)
+			{
+				aNextTristezaIncrease	=	Time.time + aTristezaIncreaseRate;
+				aCurrentMATEA[2]		+=	5;
+			}
 		}
-		if (Input.GetKeyDown(KeyCode.Alpha2))
+		else
 		{
-			aCurrentMATEA[1] = Mathf.Clamp(aCurrentMATEA[1] + 100, 0, aMaximumValue);
-			mpCalculateDominantEmotion();
+			aNextTristezaIncrease	=	Time.time + aTristezaIncreaseRate;
 		}
-		if (Input.GetKeyDown(KeyCode.Alpha3))
+
+		if (Input.GetAxisRaw("rightTrigger") > 0)
 		{
-			aCurrentMATEA[2] = Mathf.Clamp(aCurrentMATEA[2] + 100, 0, aMaximumValue);
-			mpCalculateDominantEmotion();
+			if (Input.GetButtonDown("padUp"))
+			{
+				aDominantEmotion	=	eMatea.MIEDO;
+				mpToggleEmotion(true);
+			}
+			else if (Input.GetButtonDown("padRight"))
+			{
+				aDominantEmotion	=	eMatea.ALEGRIA;
+				mpToggleEmotion(true);
+			}
+			else if (Input.GetButtonDown("padDown"))
+			{
+				aDominantEmotion	=	eMatea.TRISTEZA;
+				mpToggleEmotion(true);
+			}
+			else if (Input.GetButtonDown("padLeft"))
+			{
+				aDominantEmotion	=	eMatea.ENOJO;
+				mpToggleEmotion(true);
+			}
+		}
+		else if (Input.GetAxisRaw("leftTrigger") > 0)
+		{
+			mpResetMatea();
 		}
 	}
 }

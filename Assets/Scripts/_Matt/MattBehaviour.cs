@@ -18,6 +18,8 @@ public class MattBehaviour : MonoBehaviour
 	public		Animator		aAnimator;
 	[HideInInspector]
 	public		AudioSource		aAudioSource;
+	[HideInInspector]
+	public		Transform		aMattCamera;
 
 	public void mpInitBehaviour()
 	{
@@ -29,6 +31,7 @@ public class MattBehaviour : MonoBehaviour
 
 		aAnimator		=	GetComponent<Animator>();
 		aAudioSource	=	GetComponent<AudioSource>();
+		aMattCamera		=	transform.root.FindChild("Camera");
 	}
 
 	public void mpExecuteFSM()
@@ -37,8 +40,6 @@ public class MattBehaviour : MonoBehaviour
 		{
 		case eMattState.IDLE:
 			aAnimator.SetInteger("State", 0);
-			break;
-		case eMattState.WALKING:
 			break;
 		case eMattState.RUNNING:
 			aAnimator.SetInteger("State", 1);

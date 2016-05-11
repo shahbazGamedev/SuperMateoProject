@@ -8,21 +8,16 @@
 	NORMAL
 };
 
-public enum eFearPhase
+public enum eMiedoPhase
 {
 	STEALTH,
 	DEFENSIVE
 }
 
-public enum eStatus
-{
-	NORMAL,
-	ALTERED
-}
-
 public enum eEnemyAIState
 {
 	WANDER,
+	HIT,
 	CHASING,
 	APPROACHING,
 	ATTACK,
@@ -44,7 +39,6 @@ public enum eEnemyAnimState
 public enum eMattState
 {
 	IDLE,
-	WALKING,
 	RUNNING,
 	ATTACKING,
 	JUMPING,
