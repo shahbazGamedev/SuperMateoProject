@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/tutorialLevel.unity
+- path: Assets/miedoLevel.unity
   isLoaded: 1
   isActive: 1

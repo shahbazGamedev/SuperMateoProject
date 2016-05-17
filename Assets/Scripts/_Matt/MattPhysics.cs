@@ -12,7 +12,7 @@ public class MattPhysics : MattStatus
 	[Range(0.8f, 3.0f)]
 	public	float		aGravity;
 
-	[Range(18.0f, 20.0f)]
+	[Range(18.0f, 28.0f)]
 	public	float		aJumpHeight;
 
 	private	bool		aMattCanMove	=	true;

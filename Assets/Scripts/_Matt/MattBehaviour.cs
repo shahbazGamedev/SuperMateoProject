@@ -48,8 +48,10 @@ public class MattBehaviour : MonoBehaviour
 			aAnimator.SetInteger("State", 2);
 			break;
 		case eMattState.JUMPING:
+			aAnimator.SetInteger("State", 3);
 			break;
 		case eMattState.FALLING:
+			aAnimator.SetInteger("State", 4);
 			break;
 		case eMattState.DEATH:
 			print("DEATH: " + Time.time);

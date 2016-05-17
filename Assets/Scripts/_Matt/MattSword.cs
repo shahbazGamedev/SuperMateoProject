@@ -15,10 +15,15 @@ public class MattSword : MonoBehaviour
 
 	private	eMattState	aStateBeforeAttacking;
 
+	private float 		aNextAttack;
+	public	float		aAttackRate;
+
 	void Start()
 	{
 		aMattManager	=	transform.root.GetComponentInChildren<MattManager>();
 		aAudioSource	=	GetComponent<AudioSource>();
+
+		aNextAttack		=	0.0f;
 	}
 
 	void OnTriggerStay(Collider pOther)
