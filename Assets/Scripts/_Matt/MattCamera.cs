@@ -31,6 +31,8 @@ public class MattCamera : MonoBehaviour
 
 	private	ScreenOverlay	aScreenOverlay;
 
+	public	bool			aDisabled;
+
 	void Start()
 	{
 		aMattTransform	=	transform.parent.FindChild("Character");
@@ -41,6 +43,7 @@ public class MattCamera : MonoBehaviour
 		aCurrentHeight			=	0.8f;					
 		aPushCameraBackwards	=	true;
 		aOffsetFromTarget		=	new Vector3(0.0f, 3.5f, 6.0f);
+		aDisabled				=	false;
 	}
 
 	IEnumerator mcLerpAlpha()
@@ -51,11 +54,15 @@ public class MattCamera : MonoBehaviour
 			yield return null;
 		}
 
+		CheckpointManager.mpSendMattToCheckpoint();
+		yield return new WaitForSeconds(0.2f);
+
 		while (aScreenOverlay.intensity > 0.0f)
 		{
 			aScreenOverlay.intensity	=	Utilities.mfApproach(0.0f, aScreenOverlay.intensity, Time.deltaTime * 2.5f);
 			yield return null;
 		}
+
 	}
 
 	public void mpLerpOverlay()
@@ -99,37 +106,38 @@ public class MattCamera : MonoBehaviour
 			}
 		}
 
-		//modify camera tilt and follow up if Matt jumps
-		if (aMattPhysics.mfMattIsGrounded())
+		if (!aDisabled)
 		{
-			aCurrentFollowUpSpeed	=	aFollowUpSpeed;
-		}
-		else
-		{
-			if (aMattPhysics.velocity_Y < 0.0f)
+			//modify camera tilt and follow up if Matt jumps
+			if (aMattPhysics.mfMattIsGrounded())
 			{
-				aCurrentFollowUpSpeed	=	aFollowUpSpeed * 10.0f;
+				aCurrentFollowUpSpeed	=	aFollowUpSpeed;
 			}
+			else
+			{
+				if (aMattPhysics.velocity_Y < 0.0f)
+				{
+					aCurrentFollowUpSpeed	=	aFollowUpSpeed * 10.0f;
+				}
+			}
+
+			//translate camera to desired position.
+			if (aPushCameraBackwards)
+			{
+				aNextPosition	=	aMattTransform.position + Vector3.up * aOffsetFromTarget.y * 1.25f + Vector3.back * aOffsetFromTarget.z * 1.5f;
+				aHeight			=	1.5f;
+			}
+			else
+			{
+				aNextPosition	=	aMattTransform.position + Vector3.up * aOffsetFromTarget.y + Vector3.back * aOffsetFromTarget.z;
+				aHeight			=	0.8f;
+			}
+
+			//transform values interpolation
+			transform.position	=	Vector3.MoveTowards	(transform.position, aNextPosition, aCurrentFollowUpSpeed * Time.deltaTime);
+			aCurrentHeight		=	Utilities.mfApproach(aHeight, aCurrentHeight, 4.0f * Time.deltaTime);
+
+			transform.LookAt(aMattTransform.position + Vector3.up * aCurrentHeight);
 		}
-
-		//translate camera to desired position.
-		if (aPushCameraBackwards)
-		{
-			aNextPosition	=	aMattTransform.position + Vector3.up * aOffsetFromTarget.y * 1.25f + Vector3.back * aOffsetFromTarget.z * 1.5f;
-			aHeight			=	1.5f;
-		}
-		else
-		{
-			aNextPosition	=	aMattTransform.position + Vector3.up * aOffsetFromTarget.y + Vector3.back * aOffsetFromTarget.z;
-			aHeight			=	0.8f;
-		}
-
-
-		//transform values interpolation
-		transform.position	=	Vector3.MoveTowards	(transform.position, aNextPosition, aCurrentFollowUpSpeed * Time.deltaTime);
-		aCurrentHeight		=	Utilities.mfApproach(aHeight, aCurrentHeight, 4.0f * Time.deltaTime);
-
-		transform.LookAt(aMattTransform.position + Vector3.up * aCurrentHeight);
-
 	}
 }

@@ -8,6 +8,12 @@
 	NORMAL
 };
 
+public enum eSurfaces
+{
+	GRASS,
+	STONE
+}
+
 public enum eMiedoPhase
 {
 	STEALTH,

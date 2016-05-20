@@ -5,12 +5,13 @@ using UnityStandardAssets.ImageEffects;
 public class MiedoVisuals : MonoBehaviour 
 {
 	//condition length
-	public	GameObject	aMiedoAmbience;
-	private	GameObject	aMiedoAmbienceReference;
+	private	AudioSource		aAudioSource;
+	public	AudioClip		aStealthAmbience;
+	public	AudioClip		aDefensiveAmbience;
 
 	//increase rate of filters properties
 	private	const float		ACCELERATION 			= 	0.50f;
-	private	const float		MAX_INTENSITY_OVERLAY	=	0.2f;//0.75f;	
+	private	const float		MAX_INTENSITY_OVERLAY	=	0.5f;//0.75f;	
 	private	const float		MAX_BLUR_AMOUNT			=	0.5f;//0.80f;	
 	private	const float		MAX_INTENSITY_BW		=	1.00f;	
 
@@ -33,9 +34,19 @@ public class MiedoVisuals : MonoBehaviour
 		aBlackWhite.enabled 	=	true;
 		aBlackWhite.intensity	=	0.0f;
 
-		aMiedoAmbienceReference	=	(GameObject)Instantiate(aMiedoAmbience, transform.position, transform.rotation);
+		aAudioSource		=	GetComponent<AudioSource>();
+
+		aAudioSource.clip	=	aStealthAmbience;
+		aAudioSource.Play();
 
 		StartCoroutine(mcLerpUp());
+	}
+
+	public void mpChangeAmbienceToDefensive()
+	{
+		aAudioSource.Stop();
+		aAudioSource.clip	=	aDefensiveAmbience;
+		aAudioSource.Play();
 	}
 
 	IEnumerator mcLerpUp()
@@ -72,7 +83,6 @@ public class MiedoVisuals : MonoBehaviour
 		aBlackWhite.enabled		=	false;
 
 		transform.root.Find("Character").GetComponent<MattManager>().mpResetMatea();
-		aMiedoAmbienceReference.GetComponent<AudioFadeInOut>().mpFadeOutVolume();
 
 		Destroy(gameObject);
 	}

@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: d31813c7a32754fef96a230dd0309bf3
-timeCreated: 1462774534
+timeCreated: 1463629269
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
@@ -2047,7 +2047,7 @@ ModelImporter:
     4300086: matt_rig:jack_rig:neck_geo
     4300088: matt_rig:jack_rig:torso_geo
     4300090: matt_rig:jack_rig:hips_geo
-    7400000: attack
+    7400000: attack2
     9500000: //RootNode
     13700000: matt_rig:jack_rig:foot_L_geo 1
     13700002: matt_rig:jack_rig:foot_L_geo1

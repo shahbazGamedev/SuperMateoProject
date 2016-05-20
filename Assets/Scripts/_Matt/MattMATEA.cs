@@ -52,35 +52,43 @@ public class MattMATEA : MattPhysics
 				if (aCurrentMATEA[i] >= aMaximumValue)
 				{
 					aDominantEmotion	=	(eMatea)i;
-					mpToggleEmotion(true);
+					mpEnableEmotion();
 					break;
 				}
 			}
 		}
 	}
 
-	private void mpToggleEmotion(bool pValue)
+	public void mpDisableEmotions()
+	{
+		aMiedoRef.enabled		=	false;
+		aAlegriaRef.enabled		=	false;
+		aTristezaRef.enabled	=	false;
+		aEnojoRef.enabled		=	false;
+	}
+
+	private void mpEnableEmotion()
 	{
 		switch (aDominantEmotion)
 		{
 		case eMatea.MIEDO: 
-			aMiedoRef.enabled		=	pValue;
+			aMiedoRef.enabled		=	true;
 			break;
 		case eMatea.ALEGRIA: 
-			aAlegriaRef.enabled		=	pValue;
+			aAlegriaRef.enabled		=	true;
 			break;
 		case eMatea.TRISTEZA: 
-			aTristezaRef.enabled	=	pValue;
+			aTristezaRef.enabled	=	true;
 			break;
 		case eMatea.ENOJO:
-			aEnojoRef.enabled		=	pValue;
+			aEnojoRef.enabled		=	true;
 			break;
 		}
 	}
 
 	public void mpResetMatea()
 	{
-		mpToggleEmotion(false);
+		mpDisableEmotions();
 
 		if (aDominantEmotion != eMatea.NORMAL)
 		{
@@ -127,7 +135,8 @@ public class MattMATEA : MattPhysics
 			if (Time.time > aNextTristezaIncrease)
 			{
 				aNextTristezaIncrease	=	Time.time + aTristezaIncreaseRate;
-				aCurrentMATEA[2]		+=	5;
+				aCurrentMATEA[(int)eMatea.TRISTEZA] = Mathf.Clamp(aCurrentMATEA[(int)eMatea.TRISTEZA] + 4, 0, aMaximumValue);
+				mpCalculateDominantEmotion();
 			}
 		}
 		else
@@ -139,23 +148,27 @@ public class MattMATEA : MattPhysics
 		{
 			if (Input.GetButtonDown("padUp"))
 			{
+				mpDisableEmotions();
 				aDominantEmotion	=	eMatea.MIEDO;
-				mpToggleEmotion(true);
+				aMiedoRef.enabled 	=	true;
 			}
 			else if (Input.GetButtonDown("padRight"))
 			{
+				mpDisableEmotions();
 				aDominantEmotion	=	eMatea.ALEGRIA;
-				mpToggleEmotion(true);
+				aAlegriaRef.enabled =	true;
 			}
 			else if (Input.GetButtonDown("padDown"))
 			{
-				aDominantEmotion	=	eMatea.TRISTEZA;
-				mpToggleEmotion(true);
+				mpDisableEmotions();
+				aDominantEmotion		=	eMatea.TRISTEZA;
+				aTristezaRef.enabled 	=	true;
 			}
 			else if (Input.GetButtonDown("padLeft"))
 			{
+				mpDisableEmotions();
 				aDominantEmotion	=	eMatea.ENOJO;
-				mpToggleEmotion(true);
+				aEnojoRef.enabled 	=	true;
 			}
 		}
 		else if (Input.GetAxisRaw("leftTrigger") > 0)

@@ -45,6 +45,8 @@ public class Miedo : MonoBehaviour
 		aMiedoState	=	eMiedoPhase.DEFENSIVE;
 		aMattManager.transform.localScale	*=	aMattDefensiveScale;
 		aMattManager.mpEnableMultipliers(aStrMultiplierDefensive, aSpdMultiplierDefensive, aDefMultiplierDefensive);
+
+		aMiedoObject.GetComponent<MiedoVisuals>().mpChangeAmbienceToDefensive();
 	}
 
 	public void mpActivateStealthMode()

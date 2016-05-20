@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityStandardAssets.ImageEffects;
 using System.Collections;
 
 public class TristezaVisuals : MonoBehaviour 
@@ -13,14 +14,14 @@ public class TristezaVisuals : MonoBehaviour
 	private	ArrayList		aHiddenIndexes;
 	private	int				aObjectsCount;
 
-	private	FadeOutColor	aBlackWhite;
+	private	ColorCorrectionCurves	aColorCurves;
 
 	private	const	float	FOV_ACCELERATION 	= 	120.0f;
 	private	const	float	BW_ACCELERATION 	= 	1.5f;
 
 	private	const	float	MAX_FOV				=	120.0f;	
 	private	const	float	MIN_FOV				=	60.0f;	
-	private	const	float	MAX_INTENSITY_BW	=	0.85f;	
+	private	const	float	MIN_COLOR_SATUR		=	0.125f;	
 
 	void Start () 
 	{
@@ -32,7 +33,7 @@ public class TristezaVisuals : MonoBehaviour
 
 		for (int i = 0; i < aObjectsCount; i++)
 		{
-			if (Utilities.mfExecuteRNG(80))
+			if (Utilities.mfExecuteRNG(90))
 			{
 				aHiddenIndexes.Add(i);
 				aHiddenObjects[i].SetActive(false);
@@ -42,18 +43,24 @@ public class TristezaVisuals : MonoBehaviour
 		aRainReference	=	(GameObject)Instantiate(aRainCloud, transform.position, transform.rotation);
 		aRainReference.transform.SetParent(transform.parent);
 
-		aBlackWhite				=	GetComponent<FadeOutColor>();
-		aBlackWhite.enabled 	=	true;
-		aBlackWhite.intensity	=	0.0f;
+		aColorCurves			=	GetComponent<ColorCorrectionCurves>();
+		aColorCurves.enabled 	=	true;
 
 		StartCoroutine(mcLerpUp());
 	}
 
 	IEnumerator mcLerpUp()
 	{
-		while (aBlackWhite.intensity < MAX_INTENSITY_BW)
+		while (aColorCurves.blueChannel.keys[0].value < 1.0f)
 		{
-			aBlackWhite.intensity	=	Utilities.mfApproach(MAX_INTENSITY_BW, aBlackWhite.intensity, BW_ACCELERATION * Time.deltaTime);
+			aColorCurves.saturation	=	Utilities.mfApproach(MIN_COLOR_SATUR, aColorCurves.saturation, BW_ACCELERATION * Time.deltaTime);
+
+
+			aColorCurves.blueChannel	=	AnimationCurve.Linear(0.0f,
+																  Utilities.mfApproach(1.0f, aColorCurves.blueChannel.keys[0].value, 0.05f), 
+																  1.0f, 
+																  Utilities.mfApproach(1.0f, aColorCurves.blueChannel.keys[1].value, 0.05f));
+
 			yield return null;
 		}
 		while (aCamera.fieldOfView < MAX_FOV)
@@ -70,9 +77,16 @@ public class TristezaVisuals : MonoBehaviour
 
 	IEnumerator mcLerpDown()
 	{
-		while (aBlackWhite.intensity > 0.0f)
+		while (aColorCurves.saturation < 1.0f)
 		{
-			aBlackWhite.intensity	=	Utilities.mfApproach(0.0f, aBlackWhite.intensity, BW_ACCELERATION * Time.deltaTime);
+			aColorCurves.saturation	=	Utilities.mfApproach(1.0f, aColorCurves.saturation, BW_ACCELERATION * Time.deltaTime);
+
+
+			aColorCurves.blueChannel	=	AnimationCurve.EaseInOut(0.0f,
+																  	 Utilities.mfApproach(0.0f, aColorCurves.blueChannel.keys[0].value, 0.05f), 
+																 	 1.0f, 
+																  	 1.0f);
+
 			yield return null;
 		}
 		while (aCamera.fieldOfView > MIN_FOV)

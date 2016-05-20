@@ -15,15 +15,18 @@ public class MattPhysics : MattStatus
 	[Range(18.0f, 28.0f)]
 	public	float		aJumpHeight;
 
-	private	bool		aMattCanMove	=	true;
+	public	bool		aMattCanMove;
+	public	bool		aMattJustRespawned;
 
-	private	RaycastHit	aHit;
+	private	RaycastHit		aHit;
+	private	WalkCyclePlayer	aWalkManager;
+
 
 	public void mpInitPhysicsEngine() 
 	{
-		//set values to their "sweet spots"
-		aGravity	=	0.8f;
-		aJumpHeight	=	18.0f;
+		aMattCanMove		=	true;
+		aMattJustRespawned	=	false;
+		aWalkManager		=	GetComponent<WalkCyclePlayer>();
 	}
 
 	void FixedUpdate()
@@ -94,21 +97,43 @@ public class MattPhysics : MattStatus
 		//if there is any collider below then return true
 		if (Physics.Raycast(transform.position, Vector3.down, out aHit, aCollider.bounds.extents.y + 0.1f))
 		{
-			if (aHit.transform.tag == "Enemy" || aHit.transform.tag == "DeadVolume")
+			switch (aHit.transform.tag)
 			{
+			case "Grass": default:
+				aWalkManager.aCurrentSurface	=	eSurfaces.GRASS; 
+				break;
+			case "Stone": 
+				aWalkManager.aCurrentSurface	=	eSurfaces.STONE; 
+				break;
+			case "Enemy": case "DeadVolume":
 				return false;
 			}
-			else
+
+			if (aCurrentState == eMattState.FALLING)
 			{
-				if (aCurrentState == eMattState.FALLING)
+				if (!aMattJustRespawned)
 				{
-					aCurrentState	=	eMattState.IDLE;
+					switch (aWalkManager.aCurrentSurface)
+					{
+					case eSurfaces.GRASS: default:
+						aAudioSource.PlayOneShot(aGrassLandingSFX);
+						break;
+					case eSurfaces.STONE: 
+						aAudioSource.PlayOneShot(aStoneLandingSFX);
+						break;
+					}
 				}
-				return true;
+				else
+				{
+					aMattJustRespawned = false;
+				}
+
+				aCurrentState	=	eMattState.IDLE;
 			}
+			return true;
+
 		}
 
-		//WARNING: triggers can be detected and may return true
    		return false;
 	}
 
@@ -121,9 +146,10 @@ public class MattPhysics : MattStatus
 	public void mpMakeMattBounce(float pBounceHeight)
 	{
 		//make Matt jump even if he is not grounded
-		aVelocity = aRgbody.velocity;
-			aVelocity.y = pBounceHeight;
-		aRgbody.velocity = aVelocity;
+		aVelocity 			= 	aRgbody.velocity;
+		aCurrentState		=	eMattState.JUMPING;
+		aVelocity.y 		= 	pBounceHeight;
+		aRgbody.velocity 	= 	aVelocity;
 	}
 
 	public void mpDisableMattMovement()

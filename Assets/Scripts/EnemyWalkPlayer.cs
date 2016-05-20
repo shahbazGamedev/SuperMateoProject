@@ -6,6 +6,9 @@ public class EnemyWalkPlayer : MonoBehaviour
 	private	float	aNextStep;
 	public	float	aWalkRate;
 
+	public	float	aRunWalkMultiplier;
+	public	float	aSideWalkMultiplier;
+
 	public	AudioClip[]	aStepSFXs;
 	private	int			aTotalClips;
 	private	int			aCurrentClip;
@@ -30,13 +33,13 @@ public class EnemyWalkPlayer : MonoBehaviour
 			switch (aEnemyManager.aCurrentAnimState)
 			{
 			case eEnemyAnimState.RUNNING:
-            	aNextStep = Time.time + aWalkRate * 0.7f;
+            	aNextStep = Time.time + aWalkRate * aRunWalkMultiplier;// * 0.7f;
 				break;
 			case eEnemyAnimState.WALKING: 
             	aNextStep = Time.time + aWalkRate;
 				break;
 			case eEnemyAnimState.WALKING_RIGHT: case eEnemyAnimState.WALKING_LEFT:
-            	aNextStep = Time.time + aWalkRate * 0.68f;
+            	aNextStep = Time.time + aWalkRate * aSideWalkMultiplier;// * 0.68f;
 				break;
 			default:
 				return;

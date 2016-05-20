@@ -9,7 +9,7 @@ public class AlegriaVisuals : MonoBehaviour
 	private	FadeOutColor	aBlackWhite;
 
 	private	const	float	BW_ACCELERATION 	= 	 1.5f;
-	private	const	float	MAX_INTENSITY_BW	=	-2.5f;	
+	private	const	float	MAX_INTENSITY_BW	=	-1.5f;	
 
 	void Start () 
 	{	

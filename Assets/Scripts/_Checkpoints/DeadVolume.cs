@@ -3,19 +3,19 @@ using System.Collections;
 
 public class DeadVolume : MonoBehaviour 
 {
+	public bool aPlayFallingSound;
+
 	void OnTriggerEnter(Collider pOther)
 	{
 		if (pOther.tag == "Matt")
 		{
-			StartCoroutine(mcWaitBeforeSending());
+			if (aPlayFallingSound)
+			{
+				GetComponent<AudioSource>().Play();
+				pOther.GetComponent<MattPhysics>().aMattJustRespawned	=	true;
+			}
+			pOther.GetComponent<MattMATEA>().mpDisableEmotions();
+			CheckpointManager.mpLerpCameraOverlay();
 		}
 	}
-
-	IEnumerator	mcWaitBeforeSending()
-	{
-		CheckpointManager.mpLerpCameraOverlay();
-		yield return new WaitForSeconds(0.2f);
-		CheckpointManager.mpSendMattToCheckpoint();
-	}
-
 }

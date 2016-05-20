@@ -21,6 +21,10 @@ public class MattBehaviour : MonoBehaviour
 	[HideInInspector]
 	public		Transform		aMattCamera;
 
+
+	public		AudioClip		aGrassLandingSFX;
+	public		AudioClip		aStoneLandingSFX;
+
 	public void mpInitBehaviour()
 	{
 		//define component references

@@ -3,7 +3,8 @@ using System.Collections;
 
 public class AI_FixedPath : MonoBehaviour 
 {
-	public	Transform[]		aPointCollection;
+	private	GameObject		aPointCollection;
+	private	Transform[]		aTrajectoryPoints;
 
 	private	int				aDirection;
 	private	int				aTotalPoints;
@@ -19,19 +20,25 @@ public class AI_FixedPath : MonoBehaviour
 
 		aDirection		=	1;
 		aCurrentPoint	=	0;
-		aTotalPoints	=	aPointCollection.Length;
 
-		aEnemyManager.aTarget	=	aPointCollection[aCurrentPoint].gameObject;	
+		aPointCollection	=	transform.parent.parent.FindChild("TrajectoryPoints").gameObject;
+
+		aTotalPoints		=	aPointCollection.transform.childCount;
+
+		aTrajectoryPoints	=	new Transform[aTotalPoints];
 
 		Vector3	lTempPosition;
 
-		for (int i = 0; i < aTotalPoints; i++)
+		for (int i = (aTotalPoints - 1); i >= 0; i--)
 		{
-			lTempPosition					= 	aPointCollection[i].position;
+			aTrajectoryPoints[i]			=	aPointCollection.transform.GetChild(i);
+
+			lTempPosition					=	aTrajectoryPoints[i].position;
 			lTempPosition.y					=	transform.position.y;
-			aPointCollection[i].position	=	lTempPosition;
+			aTrajectoryPoints[i].position	=	lTempPosition;
 		}
 
+		aEnemyManager.aTarget			=	aTrajectoryPoints[aCurrentPoint].gameObject;
 		aEnemyManager.aCurrentAIState	=	eEnemyAIState.CHASING;
 	}
 
@@ -82,7 +89,7 @@ public class AI_FixedPath : MonoBehaviour
 
 			aCurrentPoint	+=	aDirection;
 
-			aEnemyManager.aTarget			=	aPointCollection[aCurrentPoint].gameObject;	
+			aEnemyManager.aTarget			=	aTrajectoryPoints[aCurrentPoint].gameObject;	
 			aEnemyManager.aCurrentAIState	=	eEnemyAIState.APPROACHING;		
 			break;
 

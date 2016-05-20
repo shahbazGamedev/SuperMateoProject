@@ -3,6 +3,8 @@ using System.Collections;
 
 public class AI_Arrive : MonoBehaviour
 {
+	public	bool	aWalkOnly;
+
 	public	float	aMaxAcceleration;
 
 	public	float	aMaxSpeed;	
@@ -61,7 +63,11 @@ public class AI_Arrive : MonoBehaviour
 		}
 		else if (aDistance > aSlowRadius)
 		{
-			aEnemyManager.aCurrentAIState	=	eEnemyAIState.CHASING;
+			if (aWalkOnly)
+				aEnemyManager.aCurrentAIState	=	eEnemyAIState.APPROACHING;
+			else
+				aEnemyManager.aCurrentAIState	=	eEnemyAIState.CHASING;
+
 			aCurrentSpeed					=	aMaxSpeed;
 		}
 		else

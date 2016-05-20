@@ -1,7 +1,11 @@
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2008
 
+Project("{1C3A6139-0494-FF83-A94E-6966B9390276}") = "MateoProject", "Assembly-CSharp-firstpass.csproj", "{6B5CD95B-13F6-4524-2EB0-8A8E989B610B}"
+EndProject
 Project("{1C3A6139-0494-FF83-A94E-6966B9390276}") = "MateoProject", "Assembly-CSharp.csproj", "{19715E2A-7726-5EFF-9B61-07FB065EAE58}"
+EndProject
+Project("{1C3A6139-0494-FF83-A94E-6966B9390276}") = "MateoProject", "Assembly-CSharp-Editor.csproj", "{C7367D95-1917-A0F4-CFC1-A617337A1EEA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -9,10 +13,18 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6B5CD95B-13F6-4524-2EB0-8A8E989B610B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6B5CD95B-13F6-4524-2EB0-8A8E989B610B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6B5CD95B-13F6-4524-2EB0-8A8E989B610B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6B5CD95B-13F6-4524-2EB0-8A8E989B610B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{19715E2A-7726-5EFF-9B61-07FB065EAE58}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{19715E2A-7726-5EFF-9B61-07FB065EAE58}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{19715E2A-7726-5EFF-9B61-07FB065EAE58}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{19715E2A-7726-5EFF-9B61-07FB065EAE58}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C7367D95-1917-A0F4-CFC1-A617337A1EEA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C7367D95-1917-A0F4-CFC1-A617337A1EEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C7367D95-1917-A0F4-CFC1-A617337A1EEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C7367D95-1917-A0F4-CFC1-A617337A1EEA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

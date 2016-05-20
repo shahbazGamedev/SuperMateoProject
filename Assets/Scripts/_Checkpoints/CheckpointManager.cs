@@ -3,6 +3,8 @@ using System.Collections;
 
 public class CheckpointManager : MonoBehaviour 
 {
+	public	static	int			aWaitTime;
+
 	private	static	Vector3		aSpawnPosition;
 	public			Transform	aMatt;
 
@@ -33,6 +35,7 @@ public class CheckpointManager : MonoBehaviour
 
 	public static void mpLerpCameraOverlay()
 	{
+		aMattCamera.aDisabled	=	true;
 		aMattCamera.mpLerpOverlay();
 	}
 
@@ -40,5 +43,7 @@ public class CheckpointManager : MonoBehaviour
 	{
 		aCharacter.transform.position	=	aSpawnPosition;
 		aCamera.transform.position		=	aSpawnPosition + aOffsetFromCharacter;
+
+		aMattCamera.aDisabled	=	false;
 	}
 }
