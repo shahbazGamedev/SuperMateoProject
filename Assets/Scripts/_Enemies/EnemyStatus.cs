@@ -37,7 +37,6 @@ public class EnemyStatus : EnemyBehaviour
 				aCurrentAIState	=	eEnemyAIState.DIE;
 				aAudioSource.PlayOneShot(aDieSFX);
 
-				transform.root.FindChild("Vision").gameObject.SetActive(false);
 				StartCoroutine(mcDestroyEnemy());
 			}
 			else
@@ -48,7 +47,7 @@ public class EnemyStatus : EnemyBehaviour
 
 				rgbody.AddForce(pHitDirection);
 
-				StopCoroutine (mcStunEnemy());
+				StopAllCoroutines();
 				StartCoroutine(mcStunEnemy());
 			}
 			return true;

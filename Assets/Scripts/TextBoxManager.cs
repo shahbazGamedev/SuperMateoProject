@@ -133,13 +133,14 @@ public class TextBoxManager : MonoBehaviour
 		}
 	}
 
-	public void mpLoadScript(TextAsset pText, int pStartLine, int pEndLine)
+	public void mpLoadScript(TextAsset pText, int pStartLine, int pEndLine, bool pStopMovement)
 	{
 		if (pText)
 		{
-			aTextLines 		=	pText.text.Split(aSeparator);
-			aCurrentLine	=	pStartLine;
-			aEndAtLine		=	pEndLine;
+			aStopPlayerMovement	=	pStopMovement;
+			aTextLines 			=	pText.text.Split(aSeparator);
+			aCurrentLine		=	pStartLine;
+			aEndAtLine			=	pEndLine;
 			mpEnableTextBox();
 		}
 	}

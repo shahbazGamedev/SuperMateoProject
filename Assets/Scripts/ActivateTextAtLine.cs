@@ -11,6 +11,7 @@ public class ActivateTextAtLine : MonoBehaviour
 	public 	bool	aRequireButtonPress;
 	private bool	aWaitForPress;
 	public	bool	aDestroyWhenActive;
+	public	bool	aStopMovement;
 
 	void Start()
 	{
@@ -21,7 +22,7 @@ public class ActivateTextAtLine : MonoBehaviour
 	{
 		if (aWaitForPress)
 		{
-			if (Input.GetButtonDown("X"))
+			if (Input.GetButtonDown("A"))
 			{
 				mpExecute();
 			}
@@ -57,7 +58,7 @@ public class ActivateTextAtLine : MonoBehaviour
 			return;
 		}
 
-		aManager.mpLoadScript(aText, aStartLine, aEndLine);
+		aManager.mpLoadScript(aText, aStartLine, aEndLine, aStopMovement);
 
 		if (aDestroyWhenActive)
 		{

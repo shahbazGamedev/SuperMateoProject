@@ -77,7 +77,7 @@ public class AI_Arrive : MonoBehaviour
 			else
 				aEnemyManager.aCurrentAIState	=	eEnemyAIState.CHASING;
 
-			aCurrentSpeed					=	aMaxSpeed;
+			aCurrentSpeed						=	aMaxSpeed;
 		}
 		else
 		{

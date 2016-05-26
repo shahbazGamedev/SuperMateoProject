@@ -52,6 +52,10 @@ public class AI_FixedPath : MonoBehaviour
 	{
 		switch (aEnemyManager.aCurrentAIState)
 		{
+		case eEnemyAIState.HIT:
+			aEnemyManager.aCurrentAnimState	=	eEnemyAnimState.HIT;
+			aArriveAI.mpUpdateArriveAI();
+			break;
 		case eEnemyAIState.CHASING: 
 			aArriveAI.mpUpdateArriveAI();
 
@@ -94,6 +98,7 @@ public class AI_FixedPath : MonoBehaviour
 			break;
 
 		case eEnemyAIState.DIE:	default: 
+			aEnemyManager.aCurrentAnimState	=	eEnemyAnimState.DIE;
 			break;
 		}
 	}
@@ -102,7 +107,9 @@ public class AI_FixedPath : MonoBehaviour
 	{
 		switch (aEnemyManager.aCurrentAnimState)
 		{
-		case eEnemyAnimState.IDLE: default:	
+		default:
+		break;
+		case eEnemyAnimState.IDLE:	
 			aEnemyManager.animator.SetInteger("State", 0); 
 			break;
 		case eEnemyAnimState.WALKING: 		

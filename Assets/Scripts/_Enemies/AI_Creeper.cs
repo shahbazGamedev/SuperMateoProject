@@ -111,6 +111,7 @@ public class AI_Creeper : MonoBehaviour
 			break;
 
 		case eEnemyAIState.DIE:	 default:	
+			transform.root.FindChild("Vision").gameObject.SetActive(false);
 			aEnemyManager.aCurrentAnimState	=	eEnemyAnimState.DIE;
 			break;
 		}
