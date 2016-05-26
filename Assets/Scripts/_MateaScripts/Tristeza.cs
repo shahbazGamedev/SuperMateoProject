@@ -3,7 +3,8 @@ using System.Collections;
 
 public class Tristeza : MonoBehaviour 
 {
-	private	MattManager	aMattManager;
+	private	StatusBadgeManager	aStatusBadgeManager;
+	private	MattManager			aMattManager;
 
 	[Range(0.1f, 2.0f)]
 	public	float	aStrMultiplier;
@@ -16,7 +17,8 @@ public class Tristeza : MonoBehaviour
 
 	void Start()
 	{
-		aMattManager	=	GetComponent<MattManager>();
+		aStatusBadgeManager	=	GameObject.Find("_canvasStatus").GetComponentInChildren<StatusBadgeManager>();
+		aMattManager		=	GetComponent<MattManager>();
 		mpInitTristeza();
 	}
 
@@ -27,6 +29,7 @@ public class Tristeza : MonoBehaviour
 		aTristezaObject	=	Utilities.mfCreateEmotionObject(aMattManager.aBiorhythm, aMattManager.aEmotionObjects[(int)aMattManager.aBiorhythm], aMattManager.aMattCamera);
 
 		aMattManager.mpEnableMultipliers(aStrMultiplier, aSpdMultiplier, aDefMultiplier);
+		aStatusBadgeManager.mpSetValues(aStrMultiplier, aSpdMultiplier, aDefMultiplier);
 	}
 
 	void OnEnable()
@@ -41,6 +44,8 @@ public class Tristeza : MonoBehaviour
 	void OnDisable()
 	{
 		aMattManager.mpDisableMultipliers();
+		aStatusBadgeManager.mpOKValues();
+
 		aMattManager.aBiorhythm	=	eMatea.NORMAL;
 
 		aTristezaObject.GetComponent<TristezaVisuals>().mpLerpDownTristezaVisuals();

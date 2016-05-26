@@ -8,6 +8,19 @@
 	NORMAL
 };
 
+public enum eTextboxes
+{
+	CENTER,
+	BOTTOM
+}
+
+public enum eSwordState
+{
+	IDLE,
+	CUTTING_THROUGH,
+
+}
+
 public enum eSurfaces
 {
 	GRASS,

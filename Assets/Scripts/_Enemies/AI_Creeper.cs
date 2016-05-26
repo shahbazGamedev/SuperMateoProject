@@ -32,10 +32,11 @@ public class AI_Creeper : MonoBehaviour
 		{
 		case eEnemyAIState.HIT:
 			aEnemyManager.aCurrentAnimState	=	eEnemyAnimState.HIT;
+			aArriveAI.mpUpdateArriveAI();
 			break;
 		case eEnemyAIState.WANDER:
 			//walk around circle
-			aWanderAI.mpExecute();
+			aWanderAI.mpUpdateWanderAI();
 			if (aEnemyManager.rightDotValue > 0.2)
 			{
 				aEnemyManager.aCurrentAnimState	=	eEnemyAnimState.WALKING_RIGHT;
@@ -51,7 +52,7 @@ public class AI_Creeper : MonoBehaviour
 			break;
 
 		case eEnemyAIState.CHASING:
-			aArriveAI.mpExecute();
+			aArriveAI.mpUpdateArriveAI();
 
 			if (aArriveAI.distance >= 20.0f)
 			{
@@ -68,7 +69,7 @@ public class AI_Creeper : MonoBehaviour
 			break;
 
 		case eEnemyAIState.APPROACHING:
-			aArriveAI.mpExecute();
+			aArriveAI.mpUpdateArriveAI();
 
 			aEnemyManager.mpUpdateRightVector(aEnemyManager.aTarget.transform.position);
 
@@ -87,7 +88,7 @@ public class AI_Creeper : MonoBehaviour
 			break;
 
 		case eEnemyAIState.ATTACK:
-			aArriveAI.mpExecute();
+			aArriveAI.mpUpdateArriveAI();
 
 			if (Vector3.Dot(transform.forward, (aEnemyManager.aTarget.transform.position - transform.position).normalized) > aEnemyManager.aAttackFrontDotValue)
 			{
@@ -106,6 +107,7 @@ public class AI_Creeper : MonoBehaviour
 					aEnemyManager.aCurrentAnimState	=	eEnemyAnimState.WALKING_LEFT;
 				}
 			}
+
 			break;
 
 		case eEnemyAIState.DIE:	 default:	
@@ -146,7 +148,6 @@ public class AI_Creeper : MonoBehaviour
 			break;
 		case eEnemyAnimState.HIT: 			
 			aEnemyManager.animator.SetInteger("State", 4); 
-			aEnemyManager.mpStunEnemy(eEnemyAIState.APPROACHING);
 			return;
 		case eEnemyAnimState.DIE:			
 			aEnemyManager.animator.SetInteger("State", 5); 

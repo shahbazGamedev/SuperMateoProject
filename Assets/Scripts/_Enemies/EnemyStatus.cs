@@ -3,17 +3,15 @@ using System.Collections;
 
 public class EnemyStatus : EnemyBehaviour 
 {
-	public		float		aMaxHP;
-	[SerializeField]
-	protected	float		aCurrentHP;
+	public		float	aMaxHP;
+	protected	float	aCurrentHP;
 
 	public		float	aHitForce;
 	public		int		aStrength;
 
-	protected	bool	aIsDefeated;
-
 	public		float	aStunTime;
 	public		bool	aIsStunned;
+	public		bool	aIsDefeated;
 
 	public void mpInitStatus()
 	{
@@ -23,29 +21,38 @@ public class EnemyStatus : EnemyBehaviour
 		aIsStunned	=	false;
 	}
 
-	public void mpInflictDamage(float pDamage, Vector3 pHitDirection)
+	public bool mfInflictDamage(float pDamage, Vector3 pHitDirection)
 	{
-		aCurrentHP = Mathf.Clamp(aCurrentHP - pDamage, 0, aMaxHP);
-
-		if (aCurrentHP <= 0)
+		if (aIsDefeated)
 		{
-			aIsDefeated		=	true;
-			mpDestroyEnemy();
 			aCurrentAIState	=	eEnemyAIState.DIE;
-			aAudioSource.PlayOneShot(aDieSFX);
-			transform.root.FindChild("Vision").gameObject.SetActive(false);
+			return false;
 		}
-		else
 		{
-			aCurrentAIState	=	eEnemyAIState.HIT;
-			aAudioSource.PlayOneShot(aHitSFX);
-			rgbody.AddForce(pHitDirection);
-		}
-	}
+			aCurrentHP = Mathf.Clamp(aCurrentHP - pDamage, 0, aMaxHP);
 
-	public void mpDestroyEnemy()
-	{
-		StartCoroutine(mcDestroyEnemy());
+			if (aCurrentHP <= 0)
+			{
+				aIsDefeated		=	true;
+				aCurrentAIState	=	eEnemyAIState.DIE;
+				aAudioSource.PlayOneShot(aDieSFX);
+
+				transform.root.FindChild("Vision").gameObject.SetActive(false);
+				StartCoroutine(mcDestroyEnemy());
+			}
+			else
+			{
+				aIsStunned		=	true;
+				aCurrentAIState	=	eEnemyAIState.HIT;
+				aAudioSource.PlayOneShot(aHitSFX);
+
+				rgbody.AddForce(pHitDirection);
+
+				StopCoroutine (mcStunEnemy());
+				StartCoroutine(mcStunEnemy());
+			}
+			return true;
+		}
 	}
 
 	IEnumerator mcDestroyEnemy()
@@ -63,19 +70,11 @@ public class EnemyStatus : EnemyBehaviour
 		}
 	}
 
-	public void mpStunEnemy(eEnemyAIState pPostStunState)
+	IEnumerator	mcStunEnemy()
 	{
-		StartCoroutine(mcStunEnemy(pPostStunState));
-	}
-
-	IEnumerator	mcStunEnemy(eEnemyAIState pPostStunState)
-	{
-		aIsStunned	=	true;
-
 		yield return new WaitForSeconds(aStunTime);
-
-		aCurrentAIState		=	pPostStunState;
-		aIsStunned			=	false;
+		aIsStunned		=	false;
+		aCurrentAIState	=	eEnemyAIState.CHASING;
 	}
 
 }

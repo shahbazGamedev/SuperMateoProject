@@ -1,0 +1,2 @@
+Presiona A para saltar.*
+Presiona X para atacar enemigos.*

@@ -7,24 +7,31 @@ public class EnemyAttackPoint : MonoBehaviour
 
 	void Start()
 	{
-		aEnemyManager	=	transform.root.GetComponent<EnemyManager>();
-		if (GetComponent<Collider>() == null)
+		aEnemyManager	=	transform.root.GetComponentInChildren<EnemyManager>();
+	}
+
+	void Update()
+	{
+		if (aEnemyManager.aCurrentAIState == eEnemyAIState.DIE)
 		{
-			Debug.LogError("No collider on attack point");
+			GetComponent<Collider>().enabled	=	false;
 		}
 	}
 
-	void OnTriggerEnter(Collider pOther)
+	void OnCollisionEnter(Collision pOther)
 	{
-		if (pOther.tag == "Matt")
+		if (pOther.transform.tag == "Matt")
 		{
-			if (!aEnemyManager.aIsStunned)
+			if (aEnemyManager.animator.GetCurrentAnimatorStateInfo(0).IsName("Attack(3)"))
 			{
-				Vector3	lPushBackForce = (pOther.transform.position - transform.position).normalized * aEnemyManager.aHitForce;
-				lPushBackForce.y = 0;
+				if (!aEnemyManager.aIsStunned)
+				{
+					Vector3	lPushBackForce = (pOther.transform.position - transform.position).normalized * aEnemyManager.aHitForce;
+					lPushBackForce.y = 0;
 
-				pOther.gameObject.GetComponent<MattManager>().mpInflictDamageToMatt(aEnemyManager.aStrength, lPushBackForce);
-				pOther.transform.root.FindChild("Camera").GetComponent<PerlinShake>().mpInitShake(0.5f, 600.0f, 3.0f);
+					pOther.gameObject.GetComponent<MattManager>().mpInflictDamageToMatt(aEnemyManager.aStrength, lPushBackForce);
+					pOther.transform.root.FindChild("Camera").GetComponent<PerlinShake>().mpInitShake(0.5f, 600.0f, 3.0f);
+				}
 			}
 		}
 	}

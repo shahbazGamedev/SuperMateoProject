@@ -7,7 +7,7 @@ public class WalkCyclePlayer : MonoBehaviour
 	public	float	aWalkRate;
 
 	public	AudioClip[]	aStepSFXs;
-	private	int			aTotalClips;
+
 	[SerializeField]
 	private	int			aCurrentClip;
 	[SerializeField]
@@ -20,7 +20,6 @@ public class WalkCyclePlayer : MonoBehaviour
 	{
 		aCurrentClip	=	0;
 		aCurrentStep	=	0;
-		aTotalClips		=	aStepSFXs.Length;
 
 		aMattManager	=	GetComponent<MattManager>();
 	}
@@ -45,7 +44,7 @@ public class WalkCyclePlayer : MonoBehaviour
 
 	            	break;
 	            }
-	            aCurrentStep++;
+	            aCurrentStep	=	++aCurrentStep % 7;
 				aMattManager.aAudioSource.PlayOneShot(aStepSFXs[aCurrentClip++]);
 			}
     	}

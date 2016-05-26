@@ -53,7 +53,7 @@ public class AI_FixedPath : MonoBehaviour
 		switch (aEnemyManager.aCurrentAIState)
 		{
 		case eEnemyAIState.CHASING: 
-			aArriveAI.mpExecute();
+			aArriveAI.mpUpdateArriveAI();
 
 			aEnemyManager.mpUpdateRightVector(aEnemyManager.aTarget.transform.position);
 
@@ -73,8 +73,8 @@ public class AI_FixedPath : MonoBehaviour
 			break;
 
 		case eEnemyAIState.APPROACHING:
-			aArriveAI.mpExecute();
-				aEnemyManager.aCurrentAnimState	=	eEnemyAnimState.WALKING;
+			aArriveAI.mpUpdateArriveAI();
+			aEnemyManager.aCurrentAnimState	=	eEnemyAnimState.WALKING;
 			break;
 
 		case eEnemyAIState.ATTACK:

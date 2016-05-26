@@ -14,21 +14,24 @@ public class EnemyVision : MonoBehaviour
 	{
 		if (pOther.tag == "Matt")
 		{
-			Miedo	lMiedoRef	=	pOther.GetComponent<Miedo>();
-
-			if (lMiedoRef.enabled)
+			if (aEnemyManager.aCurrentAIState != eEnemyAIState.DIE)
 			{
-				if (lMiedoRef.aMiedoState == eMiedoPhase.STEALTH)
-					return;
-			}
+				Miedo	lMiedoRef	=	pOther.GetComponent<Miedo>();
 
-			// Go and chase Matt!
-			if (aEnemyManager.aCurrentAIState == eEnemyAIState.WANDER)
-			{
-				aEnemyManager.audioSource.PlayOneShot(aEnemyManager.aSpotLaughSFX);
-			}
+				if (lMiedoRef.enabled)
+				{
+					if (lMiedoRef.aMiedoState == eMiedoPhase.STEALTH)
+						return;
+				}
 
-			aEnemyManager.aCurrentAIState	=	eEnemyAIState.APPROACHING;
+				// Go and chase Matt!
+				if (aEnemyManager.aCurrentAIState == eEnemyAIState.WANDER)
+				{
+					aEnemyManager.audioSource.PlayOneShot(aEnemyManager.aSpotLaughSFX);
+				}
+
+				aEnemyManager.aCurrentAIState	=	eEnemyAIState.APPROACHING;
+			}
 		}
 	}
 

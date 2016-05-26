@@ -17,6 +17,9 @@ public class MattPhysics : MattStatus
 
 	public	bool		aMattCanMove;
 	public	bool		aMattJustRespawned;
+	public	bool		aMattCanAttack;
+
+	public	bool		aUseKeyboard;
 
 	private	RaycastHit		aHit;
 	private	WalkCyclePlayer	aWalkManager;
@@ -25,17 +28,31 @@ public class MattPhysics : MattStatus
 	public void mpInitPhysicsEngine() 
 	{
 		aMattCanMove		=	true;
+		aMattCanAttack		=	true;
 		aMattJustRespawned	=	false;
 		aWalkManager		=	GetComponent<WalkCyclePlayer>();
 	}
 
 	void FixedUpdate()
 	{
+		if (Input.GetButtonDown("start"))
+		{
+			aStatusHP.aCurrent	=	aStatusHP.aBase;
+		}
+
 		if (aMattCanMove)
 		{
 			//handle input
-			aGoalVelocity.x	=	Input.GetAxisRaw("leftJoystickX");
-			aGoalVelocity.z	=	Input.GetAxisRaw("leftJoystickY");
+			if (aUseKeyboard)
+			{
+				aGoalVelocity.x	=	Input.GetAxisRaw("Horizontal");
+				aGoalVelocity.z	=	Input.GetAxisRaw("Vertical");
+			}
+			else
+			{
+				aGoalVelocity.x	=	Input.GetAxisRaw("leftJoystickX");
+				aGoalVelocity.z	=	Input.GetAxisRaw("leftJoystickY");
+			}
 
 			//get and scale direction
 			aGoalVelocity	=	aGoalVelocity.normalized * aStatusSpeed.aCurrent;
@@ -155,7 +172,13 @@ public class MattPhysics : MattStatus
 	public void mpDisableMattMovement()
 	{
 		aMattCanMove		=	false;
+		mpStopMatt();
+	}
+
+	public void mpStopMatt()
+	{
 		aRgbody.velocity	=	Vector3.zero;
+		aCurrentState		=	eMattState.IDLE;
 	}
 
 	public void mpEnableMattMovement()

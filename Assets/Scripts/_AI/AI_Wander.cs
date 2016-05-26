@@ -32,12 +32,22 @@ public class AI_Wander : MonoBehaviour
 		mpResetCircle();
 	}
 
-	public void mpExecute()
+	public void mpUpdateWanderAI()
 	{
-		aEnemyManager.mpUpdateRightVector(aTargetPosition);
-		aEnemyManager.rgbody.velocity	+=	mfGetWanderSteering();
+		if (aEnemyManager.aIsDefeated)
+		{
+			aEnemyManager.aCurrentAIState	=	eEnemyAIState.DIE;
+		}
+		else
+		{
+			if (!aEnemyManager.aIsStunned)
+			{
+				aEnemyManager.mpUpdateRightVector(aTargetPosition);
+				aEnemyManager.rgbody.velocity	+=	mfGetWanderSteering();
 
-		aEnemyManager.rotationHelper.mpRotateViewVector((aTargetPosition - transform.position).normalized);
+				aEnemyManager.rotationHelper.mpRotateViewVector((aTargetPosition - transform.position).normalized);
+			}
+		}
 	}
 
 	public void mpResetCircle()

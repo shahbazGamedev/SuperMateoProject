@@ -12,9 +12,9 @@ public class DeadVolume : MonoBehaviour
 			if (aPlayFallingSound)
 			{
 				GetComponent<AudioSource>().Play();
-				pOther.GetComponent<MattPhysics>().aMattJustRespawned	=	true;
+				pOther.GetComponent<MattManager>().mpRespawnMatt();
 			}
-			pOther.GetComponent<MattMATEA>().mpDisableEmotions();
+
 			CheckpointManager.mpLerpCameraOverlay();
 		}
 	}

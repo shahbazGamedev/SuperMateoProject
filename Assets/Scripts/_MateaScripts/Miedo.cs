@@ -3,6 +3,8 @@ using System.Collections;
 
 public class Miedo : MonoBehaviour 
 {
+	private	StatusBadgeManager	aStatusBadgeManager;
+
 	public	eMiedoPhase	aMiedoState;
 
 	private	MattManager	aMattManager;
@@ -27,7 +29,8 @@ public class Miedo : MonoBehaviour
 
 	void Start()
 	{
-		aMattManager	=	GetComponent<MattManager>();
+		aStatusBadgeManager	=	GameObject.Find("_canvasStatus").GetComponentInChildren<StatusBadgeManager>();
+		aMattManager		=	GetComponent<MattManager>();
 		mpInitMiedo();
 	}
 
@@ -45,6 +48,7 @@ public class Miedo : MonoBehaviour
 		aMiedoState	=	eMiedoPhase.DEFENSIVE;
 		aMattManager.transform.localScale	*=	aMattDefensiveScale;
 		aMattManager.mpEnableMultipliers(aStrMultiplierDefensive, aSpdMultiplierDefensive, aDefMultiplierDefensive);
+		aStatusBadgeManager.mpSetValues(aStrMultiplierDefensive, aSpdMultiplierDefensive, aDefMultiplierDefensive);
 
 		aMiedoObject.GetComponent<MiedoVisuals>().mpChangeAmbienceToDefensive();
 	}
@@ -53,6 +57,7 @@ public class Miedo : MonoBehaviour
 	{
 		aMiedoState	=	eMiedoPhase.STEALTH;
 		aMattManager.mpEnableMultipliers(aStrMultiplierStealth, aSpdMultiplierStealth, aDefMultiplierStealth);
+		aStatusBadgeManager.mpSetValues(aStrMultiplierStealth, aSpdMultiplierStealth, aDefMultiplierStealth);
 	}
 
 	void OnEnable()
@@ -72,6 +77,8 @@ public class Miedo : MonoBehaviour
 		}
 
 		aMattManager.mpDisableMultipliers();
+		aStatusBadgeManager.mpOKValues();
+
 		aMattManager.aBiorhythm	=	eMatea.NORMAL;
 		aMiedoObject.GetComponent<MiedoVisuals>().mpLerpDownMiedoVisuals();
 	}

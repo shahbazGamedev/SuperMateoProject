@@ -1,16 +1,35 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class Utilities : MonoBehaviour 
 {
-	static	public	GameObject	aMattCamera;
+	public	GameObject	aHPCanvas;
+	public	GameObject	aMateaCanvas;
+	public	GameObject	aStatusCanvas;
+	public	GameObject	aNotifPanel;
+	static	public	GameObject	aNotificationPanel;
+	static	public	GameObject	aHP;
+	static	public	GameObject	aMatea;
+	static	public	GameObject	aStatus;
+
 	private	const	float		GRAVITY_FACTOR = 18.0f;
 
 	void Awake()
 	{
 		//set increased gravity for faster falling
-		Physics.gravity =	Vector3.down * GRAVITY_FACTOR;
-		aMattCamera		= 	GameObject.FindGameObjectWithTag("MainCamera");
+		Physics.gravity 	=	Vector3.down * GRAVITY_FACTOR;
+		aNotificationPanel	=	aNotifPanel;
+		aHP					=	aHPCanvas;
+		aMatea				=	aMateaCanvas;
+		aStatus				=	aStatusCanvas;
+	}
+
+	public static void mpGameOver()
+	{
+		Utilities.aHP.SetActive(false);
+		Utilities.aMatea.SetActive(false);
+		Utilities.aStatus.SetActive(false);
 	}
 
 	//basic lerp function

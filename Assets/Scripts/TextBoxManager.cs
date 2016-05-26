@@ -1,10 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
-
 using UnityEngine.UI;
 
 public class TextBoxManager : MonoBehaviour
 {
+	public	Canvas		aMatea;
+	public	Canvas		aStatus;
+
 	public	GameObject	aTextbox;
 	public	Text 		aText;
 
@@ -19,7 +21,6 @@ public class TextBoxManager : MonoBehaviour
 
 	private	MattManager	aMattManager;
 	private	AudioSource	aAudioSource;
-	public	AudioClip	aOpen;
 	public	AudioClip	aClose;
 	public	AudioClip	aNext;
 
@@ -28,7 +29,7 @@ public class TextBoxManager : MonoBehaviour
 
 	public	float		aTypeSpeed;
 
-	private	char[]		aSeparator = {'\n'};
+	private	char[]		aSeparator = {'*'};
 
 	void Start()
 	{
@@ -48,10 +49,6 @@ public class TextBoxManager : MonoBehaviour
 		if (aIsActive)
 		{
 			mpEnableTextBox();
-		}
-		else
-		{
-			mpDisableTextBox();
 		}
 	}	
 
@@ -78,7 +75,6 @@ public class TextBoxManager : MonoBehaviour
 			{
 				if (!aCancelTyping)
 				{
-					aAudioSource.PlayOneShot(aNext);
 					aCancelTyping = true;
 				}
 			}
@@ -108,7 +104,9 @@ public class TextBoxManager : MonoBehaviour
 
 	public void mpEnableTextBox()
 	{
-		aAudioSource.PlayOneShot(aOpen);
+		aMatea.enabled	=	false;
+		aStatus.enabled	=	false;
+
 		aTextbox.SetActive(true);
 		aIsActive 	=	true;
 
@@ -122,6 +120,9 @@ public class TextBoxManager : MonoBehaviour
 
 	public void mpDisableTextBox()
 	{
+		aMatea.enabled	=	true;
+		aStatus.enabled	=	true;
+
 		aAudioSource.PlayOneShot(aClose);
 		aTextbox.SetActive(false);
 		aIsActive 	=	false;
@@ -132,11 +133,14 @@ public class TextBoxManager : MonoBehaviour
 		}
 	}
 
-	public void mpLoadScript(TextAsset pText)
+	public void mpLoadScript(TextAsset pText, int pStartLine, int pEndLine)
 	{
 		if (pText)
 		{
-			aTextLines 	=	pText.text.Split(aSeparator);
+			aTextLines 		=	pText.text.Split(aSeparator);
+			aCurrentLine	=	pStartLine;
+			aEndAtLine		=	pEndLine;
+			mpEnableTextBox();
 		}
 	}
 }

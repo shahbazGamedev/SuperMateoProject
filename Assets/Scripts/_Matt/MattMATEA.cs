@@ -130,13 +130,17 @@ public class MattMATEA : MattPhysics
 
 	protected void mpUpdateMatea()
 	{
+		
 		if (aCurrentState == eMattState.IDLE && aDominantEmotion != eMatea.TRISTEZA)
 		{
-			if (Time.time > aNextTristezaIncrease)
+			if (aMattCanMove)
 			{
-				aNextTristezaIncrease	=	Time.time + aTristezaIncreaseRate;
-				aCurrentMATEA[(int)eMatea.TRISTEZA] = Mathf.Clamp(aCurrentMATEA[(int)eMatea.TRISTEZA] + 4, 0, aMaximumValue);
-				mpCalculateDominantEmotion();
+				if (Time.time > aNextTristezaIncrease)
+				{
+					aNextTristezaIncrease				=	Time.time + aTristezaIncreaseRate;
+					aCurrentMATEA[(int)eMatea.TRISTEZA] =	Mathf.Clamp(aCurrentMATEA[(int)eMatea.TRISTEZA] + 4, 0, aMaximumValue);
+					mpCalculateDominantEmotion();
+				}
 			}
 		}
 		else
@@ -175,5 +179,12 @@ public class MattMATEA : MattPhysics
 		{
 			mpResetMatea();
 		}
+	}
+
+	public void mpRespawnMatt()
+	{
+		aMattJustRespawned	=	true;
+		mpInflictDamageToMatt(20.0f, Vector3.zero, 0);
+		mpDisableEmotions();
 	}
 }

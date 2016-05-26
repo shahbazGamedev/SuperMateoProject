@@ -1003,6 +1003,8 @@ ModelImporter:
     101990: matt_rig:jack_rig:upperleg_R_geo
     101992: matt_rig:jack_rig:zeroWeightJoint
     101994: pasted__group
+    101996: group4
+    101998: matt_rig1:jack_rig:rig_group
     400000: //RootNode
     400002: group
     400004: group1
@@ -2001,6 +2003,8 @@ ModelImporter:
     401990: matt_rig:jack_rig:upperleg_R_geo
     401992: matt_rig:jack_rig:zeroWeightJoint
     401994: pasted__group
+    401996: group4
+    401998: matt_rig1:jack_rig:rig_group
     4300000: matt_rig:jack_rig:lowerleg_L_geo
     4300002: matt_rig:jack_rig:upperleg_L_geo
     4300004: matt_rig:jack_rig:lowerleg_R_geo
@@ -2128,7 +2132,7 @@ ModelImporter:
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 1
+      loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0

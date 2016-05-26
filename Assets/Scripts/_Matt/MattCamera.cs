@@ -46,7 +46,7 @@ public class MattCamera : MonoBehaviour
 		aDisabled				=	false;
 	}
 
-	IEnumerator mcLerpAlpha()
+	IEnumerator mcLerpRespawn()
 	{
 		while (aScreenOverlay.intensity < 1.0f)
 		{
@@ -65,9 +65,25 @@ public class MattCamera : MonoBehaviour
 
 	}
 
+	IEnumerator mcLerpBlackout()
+	{
+		while (aScreenOverlay.intensity < 1.0f)
+		{
+			aScreenOverlay.intensity	=	Utilities.mfApproach(1.0f, aScreenOverlay.intensity, Time.deltaTime * 4.5f);
+			yield return null;
+		}
+
+		Time.timeScale	=	0.0f;
+	}
+
 	public void mpLerpOverlay()
 	{
-		StartCoroutine(mcLerpAlpha());
+		StartCoroutine(mcLerpRespawn());
+	}
+
+	public void mpLerpGameOver()
+	{
+		StartCoroutine(mcLerpBlackout());
 	}
 
 	void Update() 

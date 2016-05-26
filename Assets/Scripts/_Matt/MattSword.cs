@@ -6,81 +6,87 @@ public class MattSword : MonoBehaviour
 	public	GameObject	aSparks;
 	public	float		aHitForce;
 
-	public	AudioClip[]	aClips;
-	private	AudioSource	aAudioSource;
+	public	AudioClip[]	aSwingClips;
+	public	AudioClip	aHitSFX;
+	private	int			aCurrentSwing;
+	private	int			aTotalSwings;
 
-	private	bool		aAttackButtonIsDown;
+	private	AudioSource	aAudioSource;
 
 	private	MattManager	aMattManager;
 
 	private	eMattState	aStateBeforeAttacking;
 
-	private float 		aNextAttack;
 	public	float		aAttackRate;
+	private	bool		aHitWasEffective;
 
 	void Start()
 	{
-		aMattManager	=	transform.root.GetComponentInChildren<MattManager>();
-		aAudioSource	=	GetComponent<AudioSource>();
+		aMattManager		=	transform.root.GetComponentInChildren<MattManager>();
+		aAudioSource		=	GetComponent<AudioSource>();
 
-		aNextAttack		=	0.0f;
+		aTotalSwings		=	aSwingClips.Length;
+		aCurrentSwing		=	0;
+		aHitWasEffective	=	false;
 	}
 
 	void OnTriggerStay(Collider pOther)
 	{
 		if (pOther.tag == "Enemy")
 		{
-			
-			if (aAttackButtonIsDown)
+			if (!aHitWasEffective && !aMattManager.aMattCanAttack)
 			{
-				Vector3	lPushBackForce = (pOther.transform.position - transform.parent.position).normalized * aHitForce;
-				lPushBackForce.y = 0;
+				aHitWasEffective		=	true;
 
-				// play hit animation on enemy
-				pOther.GetComponent<EnemyManager>().aCurrentAnimState	=	eEnemyAnimState.HIT;
+				Vector3	lPushBackForce	=	(pOther.transform.position - transform.parent.position).normalized * aHitForce;
+				lPushBackForce.y		=	0;
 
-				// damage enemy
-				pOther.GetComponent<EnemyManager>().mpInflictDamage(aMattManager.currentStrength, lPushBackForce);
-
-//				Destroy(Instantiate(aSparks, pOther.transform.position, Quaternion.identity), 2.0f);
-
-				//let go button
-				aAttackButtonIsDown	=	false;
-
-//				aAudioSource.PlayOneShot(aClips[Random.Range(0, 2)]);
+				if (pOther.GetComponent<EnemyManager>().mfInflictDamage(aMattManager.currentStrength, lPushBackForce))
+				{
+					Destroy(Instantiate(aSparks, pOther.transform.position, Quaternion.identity), 2.0f);
+					aAudioSource.PlayOneShot(aHitSFX);
+				}
 			}
 		}
 	}
 
 	IEnumerator mcAttack()
 	{
-		aAttackButtonIsDown = true;
+		aStateBeforeAttacking		=	aMattManager.aCurrentState;
+		aMattManager.aCurrentState	=	eMattState.ATTACKING;
 
-		do
-		{
-			yield return null;
-		}
-		while (aMattManager.aAnimator.GetCurrentAnimatorStateInfo(0).IsName("Attack(2)"));
+		yield return null;
 
 		aMattManager.aCurrentState	=	aStateBeforeAttacking;
-		aAttackButtonIsDown = false;
+
+		aAudioSource.PlayOneShot(aSwingClips[aCurrentSwing++]);
+		aCurrentSwing	=	aCurrentSwing % aTotalSwings;
+
+		yield return new WaitForSeconds(aAttackRate);
+
+		aMattManager.aMattCanAttack	=	true;
+		aHitWasEffective			=	false;
 	}
+
 
 	void Update()
 	{
-		if (Input.GetButtonDown("X"))
+		
+		if (aMattManager.aBiorhythm == eMatea.TRISTEZA)
 		{
-			if (aMattManager.aBiorhythm == eMatea.TRISTEZA)
+			if (Input.GetButtonDown("B"))
 			{
 				aMattManager.mpInflictDamageToMatt(10.0f, Vector3.zero, 0);
 				transform.root.FindChild("Camera").GetComponent<PerlinShake>().mpInitShake(0.5f, 600.0f, 3.0f);
 			}
-			else
+		}
+		else if (Input.GetButton("B"))
+		{
+			if (aMattManager.aCurrentState == eMattState.RUNNING || aMattManager.aCurrentState == eMattState.IDLE)
 			{
-				if (!aAttackButtonIsDown)
-				{	
-					aStateBeforeAttacking		=	aMattManager.aCurrentState;
-					aMattManager.aCurrentState	=	eMattState.ATTACKING;
+				if (aMattManager.aMattCanAttack)
+				{
+					aMattManager.aMattCanAttack	=	false;
 					StartCoroutine(mcAttack());
 				}
 			}

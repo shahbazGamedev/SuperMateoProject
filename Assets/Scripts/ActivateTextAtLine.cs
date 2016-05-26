@@ -21,7 +21,7 @@ public class ActivateTextAtLine : MonoBehaviour
 	{
 		if (aWaitForPress)
 		{
-			if (Input.GetKeyDown(KeyCode.K))
+			if (Input.GetButtonDown("X"))
 			{
 				mpExecute();
 			}
@@ -53,12 +53,12 @@ public class ActivateTextAtLine : MonoBehaviour
 	void mpExecute()
 	{
 		if (aManager.aIsActive)
+		{
 			return;
+		}
 
-		aManager.mpLoadScript(aText);
-		aManager.aCurrentLine 	=	aStartLine;
-		aManager.aEndAtLine 	=	aEndLine;
-		aManager.mpEnableTextBox();
+		aManager.mpLoadScript(aText, aStartLine, aEndLine);
+
 		if (aDestroyWhenActive)
 		{
 			Destroy(gameObject);

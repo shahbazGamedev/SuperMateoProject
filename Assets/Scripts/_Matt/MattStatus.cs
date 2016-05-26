@@ -59,16 +59,16 @@ public class MattStatus : MattBehaviour
 		{
 			//inflict damage
 			aStatusHP.aCurrent = Mathf.Clamp(aStatusHP.aCurrent - aDealtDamage, 0, aStatusHP.aBase);
+			aAudioSource.PlayOneShot(aDamageSFX);
 
 			if (aStatusHP.aCurrent <= 0)
 			{
 				aCurrentState	=	eMattState.DEATH;
-				aRgbody.AddForce(pHitDirection);
+				transform.root.FindChild("Camera").GetComponent<MattCamera>().mpLerpGameOver();
+				Utilities.mpGameOver();
 			}
-			else
-			{
-				aRgbody.AddForce(pHitDirection);
-			}
+
+			aRgbody.AddForce(pHitDirection);
 		}
 	}
 

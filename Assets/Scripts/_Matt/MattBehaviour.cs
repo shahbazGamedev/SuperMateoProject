@@ -22,6 +22,7 @@ public class MattBehaviour : MonoBehaviour
 	public		Transform		aMattCamera;
 
 
+	public		AudioClip		aDamageSFX;
 	public		AudioClip		aGrassLandingSFX;
 	public		AudioClip		aStoneLandingSFX;
 
@@ -50,6 +51,7 @@ public class MattBehaviour : MonoBehaviour
 			break;
 		case eMattState.ATTACKING:
 			aAnimator.SetInteger("State", 2);
+
 			break;
 		case eMattState.JUMPING:
 			aAnimator.SetInteger("State", 3);
@@ -58,8 +60,6 @@ public class MattBehaviour : MonoBehaviour
 			aAnimator.SetInteger("State", 4);
 			break;
 		case eMattState.DEATH:
-			print("DEATH: " + Time.time);
-			//Destroy(transform.parent.gameObject);
 			break;
 		}
 	}

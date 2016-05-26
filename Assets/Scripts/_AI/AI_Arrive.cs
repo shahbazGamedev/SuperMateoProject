@@ -27,26 +27,35 @@ public class AI_Arrive : MonoBehaviour
 		aMiedoRef		=	aEnemyManager.aTarget.GetComponent<Miedo>();
 	}
 
-	public void mpExecute()
+	public void mpUpdateArriveAI()
 	{
-		//if mateo goes STEALTH when chasing, then let him go return to WANDER.
-		if (aMiedoRef)
+		if (aEnemyManager.aIsDefeated)
 		{
-			if (aMiedoRef.enabled)
+			aEnemyManager.aCurrentAIState	=	eEnemyAIState.DIE;
+		}
+		else
+		{
+			if (!aEnemyManager.aIsStunned)
 			{
-				if (aMiedoRef.aMiedoState == eMiedoPhase.STEALTH)
+				//if mateo goes STEALTH when chasing, then let him go return to WANDER.
+				if (aMiedoRef)
 				{
-					aEnemyManager.aCurrentAIState	=	eEnemyAIState.WANDER;
-					return;
+					if (aMiedoRef.enabled)
+					{
+						if (aMiedoRef.aMiedoState == eMiedoPhase.STEALTH)
+						{
+							aEnemyManager.aCurrentAIState	=	eEnemyAIState.WANDER;
+							return;
+						}
+					}
+				}
+
+				if (!aEnemyManager.animator.GetCurrentAnimatorStateInfo(0).IsName("Attack(3)"))
+				{
+					aEnemyManager.rotationHelper.mpRotateViewVector((aEnemyManager.aTarget.transform.position - transform.position).normalized);
+					aEnemyManager.rgbody.velocity	+=	mfGetArriveSteering(aEnemyManager.aTarget.transform.position);
 				}
 			}
-		}
-
-		if (!aEnemyManager.animator.GetCurrentAnimatorStateInfo(0).IsName("Attack(3)"))
-		{
-			aEnemyManager.rotationHelper.mpRotateViewVector((aEnemyManager.aTarget.transform.position - transform.position).normalized);
-
-			aEnemyManager.rgbody.velocity	+=	mfGetArriveSteering(aEnemyManager.aTarget.transform.position);
 		}
 	}
 

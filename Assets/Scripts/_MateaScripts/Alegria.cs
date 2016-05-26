@@ -3,7 +3,8 @@ using System.Collections;
 
 public class Alegria : MonoBehaviour 
 {
-	private	MattManager	aMattManager;
+	private	StatusBadgeManager	aStatusBadgeManager;
+	private	MattManager			aMattManager;
 
 	[Range(0.1f, 2.0f)]
 	public	float	aStrMultiplier;
@@ -21,8 +22,9 @@ public class Alegria : MonoBehaviour
 
 	void Start()
 	{
-		aMattManager	=	GetComponent<MattManager>();
-		aCameraScript	=	aMattManager.aMattCamera.GetComponent<MattCamera>();
+		aStatusBadgeManager	=	GameObject.Find("_canvasStatus").GetComponentInChildren<StatusBadgeManager>();
+		aMattManager		=	GetComponent<MattManager>();
+		aCameraScript		=	aMattManager.aMattCamera.GetComponent<MattCamera>();
 		mpInitAlegria();
 	}
 
@@ -35,6 +37,7 @@ public class Alegria : MonoBehaviour
 		aCameraScript.aFollowUpSpeed	=	80.0f;
 
 		aMattManager.mpEnableMultipliers(aStrMultiplier, aSpdMultiplier, aDefMultiplier);
+		aStatusBadgeManager.mpSetValues(aStrMultiplier, aSpdMultiplier, aDefMultiplier);
 		aMattManager.mpMultiplyAcceleration(aAccMultiplier, aHitResMultiplier);
 		aMattManager.aAnimator.speed	=	2.0f;
 	}
@@ -51,6 +54,8 @@ public class Alegria : MonoBehaviour
 	void OnDisable()
 	{
 		aMattManager.mpDisableMultipliers();
+		aStatusBadgeManager.mpOKValues();
+
 		aMattManager.mpRestoreAcceleration();
 		aMattManager.aBiorhythm			=	eMatea.NORMAL;
 		aMattManager.aAnimator.speed	=	1.0f;
