@@ -17,7 +17,7 @@ public class Tristeza : MonoBehaviour
 
 	void Start()
 	{
-		aStatusBadgeManager	=	GameObject.Find("_canvasStatus").GetComponentInChildren<StatusBadgeManager>();
+		aStatusBadgeManager	=	GameObject.Find("_gameHUD").GetComponentInChildren<StatusBadgeManager>();
 		aMattManager		=	GetComponent<MattManager>();
 		mpInitTristeza();
 	}

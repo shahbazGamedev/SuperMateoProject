@@ -4,8 +4,7 @@ using UnityEngine.UI;
 
 public class TextBoxManager : MonoBehaviour
 {
-	public	Canvas		aMatea;
-	public	Canvas		aStatus;
+	public	Canvas		aHUD;
 
 	public	GameObject	aTextbox;
 	public	Text 		aText;
@@ -104,11 +103,10 @@ public class TextBoxManager : MonoBehaviour
 
 	public void mpEnableTextBox()
 	{
-		aMatea.enabled	=	false;
-		aStatus.enabled	=	false;
+		aIsActive 		=	true;
+		aHUD.enabled	=	false;
 
 		aTextbox.SetActive(true);
-		aIsActive 	=	true;
 
 		if (aStopPlayerMovement)
 		{
@@ -120,12 +118,12 @@ public class TextBoxManager : MonoBehaviour
 
 	public void mpDisableTextBox()
 	{
-		aMatea.enabled	=	true;
-		aStatus.enabled	=	true;
-
 		aAudioSource.PlayOneShot(aClose);
+
+		aIsActive 		=	false;
+		aHUD.enabled	=	true;
+
 		aTextbox.SetActive(false);
-		aIsActive 	=	false;
 
 		if (aStopPlayerMovement)
 		{

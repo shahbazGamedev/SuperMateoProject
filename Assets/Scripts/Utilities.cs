@@ -4,14 +4,10 @@ using System.Collections;
 
 public class Utilities : MonoBehaviour 
 {
-	public	GameObject	aHPCanvas;
-	public	GameObject	aMateaCanvas;
-	public	GameObject	aStatusCanvas;
+	public	GameObject	aHUD;
 	public	GameObject	aNotifPanel;
 	static	public	GameObject	aNotificationPanel;
-	static	public	GameObject	aHP;
-	static	public	GameObject	aMatea;
-	static	public	GameObject	aStatus;
+	static	public	GameObject	aGameHUD;
 
 	private	const	float		GRAVITY_FACTOR = 18.0f;
 
@@ -20,16 +16,12 @@ public class Utilities : MonoBehaviour
 		//set increased gravity for faster falling
 		Physics.gravity 	=	Vector3.down * GRAVITY_FACTOR;
 		aNotificationPanel	=	aNotifPanel;
-		aHP					=	aHPCanvas;
-		aMatea				=	aMateaCanvas;
-		aStatus				=	aStatusCanvas;
+		aGameHUD			=	aHUD;
 	}
 
 	public static void mpGameOver()
 	{
-		Utilities.aHP.SetActive(false);
-		Utilities.aMatea.SetActive(false);
-		Utilities.aStatus.SetActive(false);
+		Utilities.aGameHUD.SetActive(false);
 	}
 
 	//basic lerp function
