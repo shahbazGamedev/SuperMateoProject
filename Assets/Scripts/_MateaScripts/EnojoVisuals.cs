@@ -59,6 +59,11 @@ public class EnojoVisuals : MonoBehaviour
 			yield return null;
 		}
 
+		MattManager	lManager	=	transform.root.Find("Character").GetComponent<MattManager>();
+
+		if (lManager.mfEmotionIsEqualToDominantEmotion(eMatea.ENOJO))
+			transform.root.Find("Character").GetComponent<MattManager>().mpResetMatea();
+
 		Destroy(gameObject);
 	}
 }

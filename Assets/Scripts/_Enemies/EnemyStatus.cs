@@ -28,6 +28,7 @@ public class EnemyStatus : EnemyBehaviour
 			aCurrentAIState	=	eEnemyAIState.DIE;
 			return false;
 		}
+		else
 		{
 			aCurrentHP = Mathf.Clamp(aCurrentHP - pDamage, 0, aMaxHP);
 
@@ -38,6 +39,7 @@ public class EnemyStatus : EnemyBehaviour
 				aAudioSource.PlayOneShot(aDieSFX);
 
 				StartCoroutine(mcDestroyEnemy());
+				return false;
 			}
 			else
 			{
@@ -49,8 +51,8 @@ public class EnemyStatus : EnemyBehaviour
 
 				StopAllCoroutines();
 				StartCoroutine(mcStunEnemy());
+				return true;
 			}
-			return true;
 		}
 	}
 

@@ -46,7 +46,12 @@ public class AlegriaVisuals : MonoBehaviour
 		}
 
 		aBokehReference.GetComponent<BokehBehaviour>().mpStopBokeh();
-		transform.root.Find("Character").GetComponent<MattManager>().mpResetMatea();
+
+		MattManager	lManager	=	transform.root.Find("Character").GetComponent<MattManager>();
+
+		if (lManager.mfEmotionIsEqualToDominantEmotion(eMatea.ALEGRIA))
+			transform.root.Find("Character").GetComponent<MattManager>().mpResetMatea();
+
 		Destroy(gameObject);
 	}
 }

@@ -3,6 +3,9 @@ using System.Collections;
 
 public class MattBehaviour : MonoBehaviour 
 {
+	public	int			aPositiveStreak;
+	public	int			aNegativeStreak;
+
 	public	eMattState		aCurrentState;
 
 	//reference to the rotation view script
@@ -26,8 +29,16 @@ public class MattBehaviour : MonoBehaviour
 	public		AudioClip		aGrassLandingSFX;
 	public		AudioClip		aStoneLandingSFX;
 
+	public void mpResetStreaks()
+	{
+		aPositiveStreak	=	0;
+		aNegativeStreak	=	0;
+	}
+
 	public void mpInitBehaviour()
 	{
+		mpResetStreaks();
+
 		//define component references
 		aRotationHelper	=	GetComponent<ForwardRotate>();
 		aRgbody			=	GetComponent<Rigidbody>();

@@ -101,7 +101,12 @@ public class TristezaVisuals : MonoBehaviour
 		}
 
 		aRainReference.GetComponent<RainBehaviour>().mpStopRain();
-		transform.root.Find("Character").GetComponent<MattManager>().mpResetMatea();
+
+		MattManager	lManager	=	transform.root.Find("Character").GetComponent<MattManager>();
+
+		if (lManager.mfEmotionIsEqualToDominantEmotion(eMatea.TRISTEZA))
+			transform.root.Find("Character").GetComponent<MattManager>().mpResetMatea();
+
 		Destroy(gameObject);
 	}
 }

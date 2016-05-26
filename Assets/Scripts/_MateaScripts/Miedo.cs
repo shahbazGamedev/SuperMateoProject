@@ -69,6 +69,20 @@ public class Miedo : MonoBehaviour
 		}
 	}
 
+	void Update()
+	{
+		if ((aMattManager.aPositiveStreak % 2 == 0) && (aMattManager.aPositiveStreak > 0))
+		{
+			aMattManager.mpApplyStreakEmotion(eMatea.ALEGRIA, 20);
+			aMattManager.aPositiveStreak = 0;
+		}
+		else if (aMattManager.aNegativeStreak > 0)
+		{
+			aMattManager.mpApplyStreakEmotion(eMatea.ENOJO, 20);
+			aMattManager.aNegativeStreak = 0;
+		}
+	}
+
 	void OnDisable()
 	{
 		if (aMiedoState == eMiedoPhase.DEFENSIVE)
@@ -81,5 +95,7 @@ public class Miedo : MonoBehaviour
 
 		aMattManager.aBiorhythm	=	eMatea.NORMAL;
 		aMiedoObject.GetComponent<MiedoVisuals>().mpLerpDownMiedoVisuals();
+
+		aMattManager.mpResetStreaks();
 	}
 }

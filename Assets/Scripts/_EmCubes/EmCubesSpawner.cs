@@ -4,7 +4,7 @@ using System.Collections;
 public class EmCubesSpawner : MonoBehaviour 
 {
 	//wait time for another cube to pop up
-	public	int		aWaitTime;
+	public	float		aWaitTime;
 
 	//game object to instantiate
 	public	GameObject	aEmCubeGO;
@@ -22,8 +22,7 @@ public class EmCubesSpawner : MonoBehaviour
 		//wait for the cube to be ready
 		yield return new WaitForSeconds(aWaitTime);
 
-		//pop out cube!
-		//create and parent this cube to its spawner
+		//pop out cube! create and parent this cube to its spawner
 		aCurrentCube	=	(GameObject)Instantiate(aEmCubeGO, transform.position, Quaternion.identity);
 		aCurrentCube.transform.SetParent(transform);
 

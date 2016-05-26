@@ -1,19 +1,21 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class MattMATEA : MattPhysics 
 {
+	private	Text			aNotificationText;
 	public	GameObject[]	aEmotionObjects;
 
 	//highest assignable value for an emotion
-	private int	aMaximumValue = 100;
+	private const int	aMaximumValue = 100;
 
 	//current MATEA values
-	private int[] 	aCurrentMATEA;
-	private	eMatea	aDominantEmotion;
+	private int[] 		aCurrentMATEA;
+	private	eMatea		aDominantEmotion;
 
-	private	float	aTristezaIncreaseRate;
-	private	float	aNextTristezaIncrease;
+	private	float		aTristezaIncreaseRate;
+	private	float		aNextTristezaIncrease;
 
 	private	Miedo		aMiedoRef;
 	private	Alegria		aAlegriaRef;
@@ -22,6 +24,8 @@ public class MattMATEA : MattPhysics
 
 	public void mpInitMatea()
 	{
+		aNotificationText	=	Utilities.aNotificationPanel.GetComponentInChildren<Text>();
+
 		if (aCurrentMATEA == null)
 		{
 			aCurrentMATEA 		= 	new int[5];
@@ -45,18 +49,20 @@ public class MattMATEA : MattPhysics
 
 	private void mpCalculateDominantEmotion()
 	{
-		if (mfMattIsNormal())
+		for (int i = 0; i < 5; i++)
 		{
-			for (int i = 0; i < 5; i++)
+			if (aCurrentMATEA[i] >= aMaximumValue)
 			{
-				if (aCurrentMATEA[i] >= aMaximumValue)
-				{
-					aDominantEmotion	=	(eMatea)i;
-					mpEnableEmotion();
-					break;
-				}
+				aDominantEmotion	=	(eMatea)i;
+				mpEnableEmotion();
+				break;
 			}
 		}
+	}
+
+	public bool mfEmotionIsEqualToDominantEmotion(eMatea pEmotion)
+	{
+		return (aDominantEmotion == pEmotion);
 	}
 
 	public void mpDisableEmotions()
@@ -110,43 +116,47 @@ public class MattMATEA : MattPhysics
 
 	public int mfIncreaseEmotionByValue(eMatea pModifiedEmotion, int pValue)
 	{
-		if (mfMattIsNormal())
+		if (aCurrentMATEA[(int)pModifiedEmotion] > 0)
 		{
-			if (aCurrentMATEA[(int)pModifiedEmotion] > 0)
-			{
-				if (Utilities.mfExecuteRNG(50))
-					pValue	*=	-1;
-			}
-
-			//keep value within set interval
-			aCurrentMATEA[(int)pModifiedEmotion] = Mathf.Clamp(aCurrentMATEA[(int)pModifiedEmotion] + pValue, 0, aMaximumValue);
-			mpCalculateDominantEmotion();
-
-			return pValue;
+			if (Utilities.mfExecuteRNG(50))
+				pValue	*=	-1;
 		}
 
-		return 0;
+		//keep value within set interval
+		aCurrentMATEA[(int)pModifiedEmotion] = Mathf.Clamp(aCurrentMATEA[(int)pModifiedEmotion] + pValue, 0, aMaximumValue);
+		mpCalculateDominantEmotion();
+
+		return pValue;
+	}
+
+	public void mpApplyStreakEmotion(eMatea pEmotion, int pValue)
+	{
+		aCurrentMATEA[(int)pEmotion]	=	Mathf.Clamp(aCurrentMATEA[(int)pEmotion] + pValue, 0, aMaximumValue);
+
+		if (aCurrentMATEA[(int)pEmotion] >= aMaximumValue)
+		{
+			mpResetMatea();
+		}
+		mpCalculateDominantEmotion();
 	}
 
 	protected void mpUpdateMatea()
 	{
-		
-		if (aCurrentState == eMattState.IDLE && aDominantEmotion != eMatea.TRISTEZA)
+		if (mfMattIsNormal())
 		{
-			if (aMattCanMove)
+			if ((aPositiveStreak % 2 == 0) && (aPositiveStreak > 0))
 			{
-				if (Time.time > aNextTristezaIncrease)
-				{
-					aNextTristezaIncrease				=	Time.time + aTristezaIncreaseRate;
-					aCurrentMATEA[(int)eMatea.TRISTEZA] =	Mathf.Clamp(aCurrentMATEA[(int)eMatea.TRISTEZA] + 4, 0, aMaximumValue);
-					mpCalculateDominantEmotion();
-				}
+				mpApplyStreakEmotion(eMatea.ALEGRIA, 20);
+				aPositiveStreak = 0;
+			}
+			else if ((aNegativeStreak % 2 == 0) && (aNegativeStreak > 0))
+			{
+				mpApplyStreakEmotion(eMatea.TRISTEZA, 20);
+				aNegativeStreak = 0;
 			}
 		}
-		else
-		{
-			aNextTristezaIncrease	=	Time.time + aTristezaIncreaseRate;
-		}
+
+		mpTristezaPeriodicIncrease();
 
 		if (Input.GetAxisRaw("rightTrigger") > 0)
 		{
@@ -183,8 +193,76 @@ public class MattMATEA : MattPhysics
 
 	public void mpRespawnMatt()
 	{
+		mpDisableEmotions();
 		aMattJustRespawned	=	true;
 		mpInflictDamageToMatt(20.0f, Vector3.zero, 0);
-		mpDisableEmotions();
+	}
+
+	private void mpTristezaPeriodicIncrease()
+	{
+		if (aCurrentState == eMattState.IDLE && aDominantEmotion != eMatea.TRISTEZA)
+		{
+			if (aMattCanMove)
+			{
+				if (Time.time > aNextTristezaIncrease)
+				{
+					aNextTristezaIncrease				=	Time.time + aTristezaIncreaseRate;
+					aCurrentMATEA[(int)eMatea.TRISTEZA] =	Mathf.Clamp(aCurrentMATEA[(int)eMatea.TRISTEZA] + 4, 0, aMaximumValue);
+					mpCalculateDominantEmotion();
+				}
+			}
+		}
+		else
+		{
+			aNextTristezaIncrease	=	Time.time + aTristezaIncreaseRate;
+		}
+	}
+
+	/*
+	 *
+	 * EmCubes Logic
+	 *
+	 */
+	IEnumerator mcToggleNotification()
+	{
+		Utilities.aNotificationPanel.gameObject.SetActive(true);
+		yield return new WaitForSeconds(0.8f);	
+		Utilities.aNotificationPanel.gameObject.SetActive(false);
+	}
+
+	private string mfGetEmotionString(eMatea pEmotion)
+	{
+		switch (pEmotion)
+		{
+			case eMatea.MIEDO: 		return " Miedo";
+			case eMatea.ALEGRIA: 	return " Alegría";
+			case eMatea.TRISTEZA: 	return " Tristeza";
+			case eMatea.ENOJO: 		return " Enojo";
+			case eMatea.AMOR: 		return " Amor";
+			default: 				return "null";
+		}
+	}
+
+	public int mfEmCubeBonus(eMatea pRandomEmotion)
+	{
+		if (pRandomEmotion == aDominantEmotion)
+		{
+			pRandomEmotion	=	(eMatea)((int)eMatea.AMOR - (int)aDominantEmotion);
+		}
+
+		int lSignedResult	=	mfIncreaseEmotionByValue(pRandomEmotion, Random.Range(20, 50));
+
+		if (lSignedResult > 0)
+		{
+			aNotificationText.text	=	"+" + lSignedResult.ToString() + mfGetEmotionString(pRandomEmotion);
+		}
+		else
+		{
+			aNotificationText.text	=	lSignedResult.ToString() + mfGetEmotionString(pRandomEmotion);
+		}
+
+		StartCoroutine(mcToggleNotification());
+
+		return lSignedResult;
 	}
 }

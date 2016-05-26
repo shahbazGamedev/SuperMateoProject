@@ -61,6 +61,9 @@ public class MattStatus : MattBehaviour
 			aStatusHP.aCurrent = Mathf.Clamp(aStatusHP.aCurrent - aDealtDamage, 0, aStatusHP.aBase);
 			aAudioSource.PlayOneShot(aDamageSFX);
 
+			aNegativeStreak++;
+			aPositiveStreak = 0;
+
 			if (aStatusHP.aCurrent <= 0)
 			{
 				aCurrentState	=	eMattState.DEATH;

@@ -34,7 +34,7 @@ public class MattSword : MonoBehaviour
 	{
 		if (pOther.tag == "Enemy")
 		{
-			if (!aHitWasEffective && !aMattManager.aMattCanAttack)
+			if (!aHitWasEffective && !aMattManager.aMattCanAttack && !pOther.GetComponent<EnemyManager>().aIsDefeated)
 			{
 				aHitWasEffective		=	true;
 
@@ -46,6 +46,12 @@ public class MattSword : MonoBehaviour
 					Destroy(Instantiate(aSparks, pOther.transform.position, Quaternion.identity), 2.0f);
 					aAudioSource.PlayOneShot(aHitSFX);
 				}
+				else
+				{
+					aMattManager.aPositiveStreak	+=	2;
+				}
+				//build up positive streak
+				aMattManager.aPositiveStreak++;
 			}
 		}
 	}
@@ -71,7 +77,6 @@ public class MattSword : MonoBehaviour
 
 	void Update()
 	{
-		
 		if (aMattManager.aBiorhythm == eMatea.TRISTEZA)
 		{
 			if (Input.GetButtonDown("B"))

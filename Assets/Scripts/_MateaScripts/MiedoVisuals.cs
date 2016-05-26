@@ -103,7 +103,11 @@ public class MiedoVisuals : MonoBehaviour
 		aScreenOverlay.enabled	=	false;
 		aBlackWhite.enabled		=	false;
 
-		transform.root.Find("Character").GetComponent<MattManager>().mpResetMatea();
+
+		MattManager	lManager	=	transform.root.Find("Character").GetComponent<MattManager>();
+
+		if (lManager.mfEmotionIsEqualToDominantEmotion(eMatea.MIEDO))
+			transform.root.Find("Character").GetComponent<MattManager>().mpResetMatea();
 
 		Destroy(gameObject);
 	}

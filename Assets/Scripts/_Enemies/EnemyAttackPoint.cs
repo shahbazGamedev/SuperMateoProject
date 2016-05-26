@@ -11,33 +11,26 @@ public class EnemyAttackPoint : MonoBehaviour
 		aEnemyManager	=	transform.root.GetComponentInChildren<EnemyManager>();
 	}
 
-	void Update()
-	{
-		if (aEnemyManager.aCurrentAIState == eEnemyAIState.DIE)
-		{
-			if (!aDamageOnContact)
-				GetComponent<Collider>().enabled	=	false;
-		}
-	}
-
 	void OnCollisionEnter(Collision pOther)
 	{
 		if (pOther.transform.tag == "Matt")
 		{
-			print("damage");
-			if (aDamageOnContact)
+			if (aEnemyManager.aCurrentAIState != eEnemyAIState.DIE)
 			{
-				mpDamagePlayer(pOther);
-			}
-			else
-			{
-				if (aEnemyManager.animator.GetCurrentAnimatorStateInfo(0).IsName("Attack(3)"))
+				if (aDamageOnContact)
 				{
-					if (!aEnemyManager.aIsStunned)
-					{
-						mpDamagePlayer(pOther);
-					}
+					mpDamagePlayer(pOther);
 				}
+				else
+				{
+					if (aEnemyManager.animator.GetCurrentAnimatorStateInfo(0).IsName("Attack(3)"))
+					{
+						if (!aEnemyManager.aIsStunned)
+						{
+							mpDamagePlayer(pOther);
+						}
+					}
+				}	
 			}
 		}
 	}
