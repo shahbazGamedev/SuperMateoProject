@@ -93,6 +93,8 @@
      <Compile Include="Assets\Scripts\_Enemies\EnemyVision.cs" />
      <Compile Include="Assets\Scripts\_MateaScripts\Alegria.cs" />
      <Compile Include="Assets\Scripts\_MateaScripts\AlegriaVisuals.cs" />
+     <Compile Include="Assets\Scripts\_MateaScripts\Amor.cs" />
+     <Compile Include="Assets\Scripts\_MateaScripts\AmorVisuals.cs" />
      <Compile Include="Assets\Scripts\_MateaScripts\Enojo.cs" />
      <Compile Include="Assets\Scripts\_MateaScripts\EnojoVisuals.cs" />
      <Compile Include="Assets\Scripts\_MateaScripts\Miedo.cs" />

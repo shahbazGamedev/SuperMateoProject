@@ -30,6 +30,7 @@ public class Alegria : MonoBehaviour
 
 	void mpInitAlegria()
 	{
+		Utilities.mpMuteBgMusic();
 		aMattManager.aBiorhythm	=	eMatea.ALEGRIA;
 
 		aAlegriaObject	=	Utilities.mfCreateEmotionObject(aMattManager.aBiorhythm, aMattManager.aEmotionObjects[(int)aMattManager.aBiorhythm], aMattManager.aMattCamera);
@@ -40,6 +41,14 @@ public class Alegria : MonoBehaviour
 		aStatusBadgeManager.mpSetValues(aStrMultiplier, aSpdMultiplier, aDefMultiplier);
 		aMattManager.mpMultiplyAcceleration(aAccMultiplier, aHitResMultiplier);
 		aMattManager.aAnimator.speed	=	2.0f;
+
+		StartCoroutine(mcBeginTimer(5.0f));
+	}
+
+	IEnumerator mcBeginTimer(float pTime)
+	{
+		yield return new WaitForSeconds(pTime);
+		this.enabled	=	false;
 	}
 
 	void OnEnable()
@@ -59,6 +68,8 @@ public class Alegria : MonoBehaviour
 		aMattManager.mpRestoreAcceleration();
 		aMattManager.aBiorhythm			=	eMatea.NORMAL;
 		aMattManager.aAnimator.speed	=	1.0f;
+
+		Utilities.mpPlayBgMusic();
 
 		aAlegriaObject.GetComponent<AlegriaVisuals>().mpLerpDownAlegriaVisuals();
 		aCameraScript.aFollowUpSpeed	=	25.0f;

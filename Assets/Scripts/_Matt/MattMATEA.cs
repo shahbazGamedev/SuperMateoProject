@@ -21,6 +21,7 @@ public class MattMATEA : MattPhysics
 	private	Alegria		aAlegriaRef;
 	private	Tristeza	aTristezaRef;
 	private	Enojo		aEnojoRef;
+	private	Amor		aAmorRef;
 
 	public void mpInitMatea()
 	{
@@ -42,6 +43,7 @@ public class MattMATEA : MattPhysics
 		aAlegriaRef		=	GetComponent<Alegria>();
 		aTristezaRef	=	GetComponent<Tristeza>();
 		aEnojoRef		=	GetComponent<Enojo>();
+		aAmorRef		=	GetComponent<Amor>();
 
 		aTristezaIncreaseRate	=	3.5f;
 		aNextTristezaIncrease	=	aTristezaIncreaseRate;
@@ -71,6 +73,7 @@ public class MattMATEA : MattPhysics
 		aAlegriaRef.enabled		=	false;
 		aTristezaRef.enabled	=	false;
 		aEnojoRef.enabled		=	false;
+		aAmorRef.enabled		=	false;
 	}
 
 	private void mpEnableEmotion()
@@ -88,6 +91,11 @@ public class MattMATEA : MattPhysics
 			break;
 		case eMatea.ENOJO:
 			aEnojoRef.enabled		=	true;
+			break;
+		case eMatea.AMOR:
+			aAmorRef.enabled		=	true;
+			break;
+		default:
 			break;
 		}
 	}
@@ -124,6 +132,10 @@ public class MattMATEA : MattPhysics
 
 		//keep value within set interval
 		aCurrentMATEA[(int)pModifiedEmotion] = Mathf.Clamp(aCurrentMATEA[(int)pModifiedEmotion] + pValue, 0, aMaximumValue);
+
+		if (aCurrentMATEA[(int)pModifiedEmotion] >= aMaximumValue)
+			mpResetMatea();
+
 		mpCalculateDominantEmotion();
 
 		return pValue;
@@ -185,8 +197,15 @@ public class MattMATEA : MattPhysics
 				aEnojoRef.enabled 	=	true;
 			}
 		}
+		else if (Input.GetButtonDown("padUp"))
+		{
+			mpDisableEmotions();
+			aDominantEmotion	=	eMatea.AMOR;
+			aAmorRef.enabled 	=	true;
+		}
 		else if (Input.GetAxisRaw("leftTrigger") > 0)
 		{
+			print("reset matea " + Time.time);
 			mpResetMatea();
 		}
 	}

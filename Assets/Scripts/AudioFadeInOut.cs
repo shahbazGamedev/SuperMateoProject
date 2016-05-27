@@ -23,6 +23,7 @@ public class AudioFadeInOut : MonoBehaviour
 
 	IEnumerator mcFadeOut()
 	{
+
 		while (aSource.volume > 0.0f)
 		{
 			aSource.volume	=	Utilities.mfApproach(0.0f, aSource.volume, aAcceleration * Time.deltaTime);
@@ -34,6 +35,7 @@ public class AudioFadeInOut : MonoBehaviour
 
 	public void mpFadeOutVolume()
 	{
+		StopAllCoroutines();
 		StartCoroutine(mcFadeOut());
 	}
 }

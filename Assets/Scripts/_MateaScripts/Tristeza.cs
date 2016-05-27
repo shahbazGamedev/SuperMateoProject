@@ -24,6 +24,7 @@ public class Tristeza : MonoBehaviour
 
 	void mpInitTristeza()
 	{
+		Utilities.mpMuteBgMusic();
 		aMattManager.aBiorhythm	=	eMatea.TRISTEZA;
 
 		aTristezaObject	=	Utilities.mfCreateEmotionObject(aMattManager.aBiorhythm, aMattManager.aEmotionObjects[(int)aMattManager.aBiorhythm], aMattManager.aMattCamera);
@@ -46,8 +47,13 @@ public class Tristeza : MonoBehaviour
 		aMattManager.mpDisableMultipliers();
 		aStatusBadgeManager.mpOKValues();
 
+		aMattManager.mpFullRestore(); 
+
 		aMattManager.aBiorhythm	=	eMatea.NORMAL;
 
+		Utilities.mpPlayBgMusic();
+
 		aTristezaObject.GetComponent<TristezaVisuals>().mpLerpDownTristezaVisuals();
+
 	}
 }

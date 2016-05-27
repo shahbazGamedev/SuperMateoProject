@@ -11,6 +11,14 @@ public class EnemyAttackPoint : MonoBehaviour
 		aEnemyManager	=	transform.root.GetComponentInChildren<EnemyManager>();
 	}
 
+	void Update()
+	{
+		if (!aDamageOnContact && aEnemyManager.aCurrentAIState == eEnemyAIState.DIE)
+		{
+			GetComponent<Collider>().enabled	=	false;
+		}
+	}
+
 	void OnCollisionEnter(Collision pOther)
 	{
 		if (pOther.transform.tag == "Matt")

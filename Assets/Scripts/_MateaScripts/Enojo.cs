@@ -24,6 +24,7 @@ public class Enojo : MonoBehaviour
 
 	void mpInitEnojo()
 	{
+		Utilities.mpMuteBgMusic();
 		aMattManager.aBiorhythm	=	eMatea.ENOJO;
 
 		aEnojoObject	=	Utilities.mfCreateEmotionObject(aMattManager.aBiorhythm, aMattManager.aEmotionObjects[(int)aMattManager.aBiorhythm], aMattManager.aMattCamera);
@@ -48,6 +49,7 @@ public class Enojo : MonoBehaviour
 
 		aMattManager.aBiorhythm	=	eMatea.NORMAL;
 
+		Utilities.mpPlayBgMusic();
 		aEnojoObject.GetComponent<EnojoVisuals>().mpLerpDownAlegriaVisuals();
 	}
 }

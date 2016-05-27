@@ -75,6 +75,11 @@ public class MattStatus : MattBehaviour
 		}
 	}
 
+	public void mpFullRestore()
+	{
+		aStatusHP.aCurrent	=	aStatusHP.aBase;
+	}
+
 	public void mpEnableMultipliers(float pStrength, float pSpeed, float pDefense)
 	{
 		aStatusStrength.aCurrent		=	aStatusStrength.aBase * pStrength;

@@ -4,10 +4,12 @@ using System.Collections;
 
 public class Utilities : MonoBehaviour 
 {
-	public	GameObject	aHUD;
-	public	GameObject	aNotifPanel;
+	public	GameObject			aHUD;
+	public	GameObject			aNotifPanel;
 	static	public	GameObject	aNotificationPanel;
 	static	public	GameObject	aGameHUD;
+
+	public	static	AudioSource			aAudioSource;
 
 	private	const	float		GRAVITY_FACTOR = 18.0f;
 
@@ -17,6 +19,16 @@ public class Utilities : MonoBehaviour
 		Physics.gravity 	=	Vector3.down * GRAVITY_FACTOR;
 		aNotificationPanel	=	aNotifPanel;
 		aGameHUD			=	aHUD;
+		aAudioSource		=	GetComponent<AudioSource>();
+	}
+
+	public static void mpMuteBgMusic()
+	{
+		Utilities.aAudioSource.Stop();
+	}
+	public static void mpPlayBgMusic()
+	{
+		Utilities.aAudioSource.Play();
 	}
 
 	public static void mpGameOver()

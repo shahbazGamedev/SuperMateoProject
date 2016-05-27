@@ -36,6 +36,7 @@ public class Miedo : MonoBehaviour
 
 	void mpInitMiedo()
 	{
+		Utilities.mpMuteBgMusic();
 		aMattManager.aBiorhythm	=	eMatea.MIEDO;
 
 		aMiedoObject	=	Utilities.mfCreateEmotionObject(aMattManager.aBiorhythm, aMattManager.aEmotionObjects[(int)aMattManager.aBiorhythm], aMattManager.aMattCamera);
@@ -94,6 +95,7 @@ public class Miedo : MonoBehaviour
 		aStatusBadgeManager.mpOKValues();
 
 		aMattManager.aBiorhythm	=	eMatea.NORMAL;
+		Utilities.mpPlayBgMusic();
 		aMiedoObject.GetComponent<MiedoVisuals>().mpLerpDownMiedoVisuals();
 
 		aMattManager.mpResetStreaks();
